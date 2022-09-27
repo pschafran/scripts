@@ -1,0 +1,56 @@
+# Configuration file for genomeMaker.sh
+# ASSEMBLER, POLISHER, and REPEAT_LIBS should be provided with either a single name or a space-separated list wrapped in double quotes.
+# All other variable entries cannot contain spaces. See line comments for details.
+#
+######################################################################################################################################
+# WARNING: This file is sourced directly! Malicious code can be injected (e.g. rm -rf ). Always inspect config files before running. #
+######################################################################################################################################
+#
+# Run Settings
+SAMPLE_NAME=Anthoceros_punctatus                        # No spaces!
+CONTIG_PREFIX=Apunct_ctg                            # Name to give contigs. Will have contig number appended (in order from longest to shortest)
+GENOME_SIZE=125000000                               # Provide a genome size estimate (no abbreviations). Required to subset reads by coverage and run HASLR and CANU
+COVERAGE=100                                        # //TODO Specify amount of nanopore data to assemble, using longest reads to achieve this amount of coverage. Requires GENOME_SIZE
+CORES=24
+MIN_READ_LENGTH=10000                               # Nanopore reads shorter than this will be discarded before assembly, regardless of resulting coverage
+ASSEMBLY_SELECTION_STAGE=POLISHING                  # Select ASSEMBLY, POLISHING, REPEAT, or ANNOTATION. Stage after which only one assembly will proceed
+SELECT_CRITERION=BUSCO                              # Default is BUSCO complete % * area under N curve. Enter BUSCO or CONTIGUITY to use either metric separately. If ASSEMBLY_SELECTION_STAGE is ANNOTATION, BUSCO protein mode is used.
+BUSCO_DB=viridiplantae_odb10                        # Name of BUSCO lineage dataset to use or AUTO for automatic
+
+# Input Files
+NANOPORE=/home/ps997/Anthoceros_punctatus/Anthoceros_punctatus_20180502_20180817_20180911_nanopore_guppy_porechop.fastq.gz # Required
+ILLUMINA1=/home/ps997/Anthoceros_punctatus/illumina/150806_I262_FCC7F06ACXX_L7_RSZABPI005851-13_1.fq.gz
+ILLUMINA2=/home/ps997/Anthoceros_punctatus/illumina/150806_I262_FCC7F06ACXX_L7_RSZABPI005851-13_2.fq.gz
+RNA1=/home/ps997/Anthoceros_punctatus/rna/Anthoceros_punctatus/replicate1_RNA_repaired_R1.fq.gz
+RNA2=/home/ps997/Anthoceros_punctatus/rna/Anthoceros_punctatus/replicate1_RNA_repaired_R2.fq.gz
+REFPROT=/home/ps997/hornwort-orthologs/Hornwort_orthogroups.faa
+PLASTOME=                                            # Chloroplast genome preassembled for this species. Used to filter contigs from final assembly
+CHONDROME=                                           # Mitochondrial genome preassembled for this species. Used to filter contigs from final assembly
+
+# Assembly
+ASSEMBLER="flye miniasm canu raven wtdbg2"          # Space separated list in quotes. Delete assemblers you don't want to use. Will reuse previous assemblies if present in output directories.
+
+
+# Polishing
+POLISHER="pilon"                                    # Space separated list of polishers to run (if multiple, run in order given). Options are: pilon, racon, polca, ntedit
+POLISHING_ROUNDS=3                                  # Number of iterations of polishing to perform with each polisher
+
+
+# Repeat Masking
+REPEAT_LIBS="repeatmodeler edta repeatmodeler-raw edta-raw"           # Space separated list of repeat libraries to generate for RepeatMasker. Options are: repeatmodeler, edta, repeatmodeler-raw, edta-raw. 'raw' options are RepeatModeler/EDTA output without checking for "good" plant proteins erroneously included
+
+# Annotation
+
+
+
+# Dependencies
+MASURCA_PATH=/home/ps997/bin/MaSuRCA-4.0.3/bin/masurca      # Path to MaSuRCA executable
+CANU_PATH=/home/ps997/bin/canu-2.1.1/bin/canu               # Path to Canu executable
+PILON_PATH=/home/ps997/bin/pilon-1.24.jar                   # Path to Pilon JAR file
+AUGUSTUS_CONFIG_PATH=/home/ps997/bin/Augustus/config        # Path to the Augustus config folder. No trailing slash /
+AUGUSTUS_SCRIPTS_PATH=/home/ps997/bin/Augustus/scripts      # Path to the Augustus scripts folder. No trailing slash /
+AUGUSTUS_BIN_PATH=/home/ps997/miniconda3/envs/braker/bin    # Path to the Augustus bin folder. No trailing slash /
+GENEMARK_PATH=/home/ps997/bin/gmes_linux_64                 # Path the genemark folder. No trailing slash /
+REPEATMASKER_PATH=/home/ps997/bin/RepeatMasker/RepeatMasker # Path to RepeatMasker executable
+CONDA_PATH=~/miniconda3/etc/profile.d/conda.sh              # Path to .../etc/profile.d/conda.sh to initialize conda in subshell. Default location is in ~/miniconda3/.
+JAVAMEM=64G                                                 # Memory in GB to give to pilon
