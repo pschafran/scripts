@@ -35,7 +35,7 @@ error_break()
 }
 
 # Read in config file
-source $1
+source $(readlink -e $1)
 
 # Need to source conda in subshell to be able to activate environments
 if [ -e $CONDA_PATH ]
