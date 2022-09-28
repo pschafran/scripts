@@ -13,7 +13,7 @@ sort_and_rename_assembly()
 		then warning_report "Assembly could not be sorted. Check that assembly.fasta exists."
 	fi
 	sort -k2,2nr "$1"_sequence_lengths.tmp > "$1"_sequence_lengths.sorted.tmp
-	awk -F"\t" -v prefix=$CONTIG_PREFIX -v hash=$uniqueMark -v i="1" '{ print $1"\t"prefix""i++"/"hash }' "$1"_sequence_lengths.sorted.tmp > "$1"_sequence_lengths.new_contig_names.tsv
+	awk -F"\t" -v prefix=$CONTIG_PREFIX -v hash=$uniqueMark -v i="1" '{ print $1"\t"prefix""i++" "hash }' "$1"_sequence_lengths.sorted.tmp > "$1"_sequence_lengths.new_contig_names.tsv
 	python3 /home/ps997/scripts/renameFastaAndReorder.py "$1" "$1"_sequence_lengths.new_contig_names.tsv
 }
 
@@ -300,7 +300,7 @@ fi
 
 # Make a hash unique to the input files that will be added to all files produced
 uniqueMark=$(tar -cf - $NANOPORE $ILLUMINA1 $ILLUMINA2 $RNA1 $RNA2 $REFPROT $PLASTOME $CHONDROME | md5sum)
-
+echo "Input file hash: $uniqueMark"
 # Start assembly stage
 printf "\n***** ASSEMBLY *****\n"
 if [ ! -d assemblies ]
