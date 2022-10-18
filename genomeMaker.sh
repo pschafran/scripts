@@ -610,8 +610,8 @@ for i in "${ASSEMBLIES_TO_POLISH[@]}"
 			do PRIORCOUNT=$((PILONCOUNT-1))
 			printf "\tpolishing round %s\n" $PILONCOUNT
 			bwa index pilon-iter"$PRIORCOUNT".fasta &> /dev/null
-			bwa mem -t $CORES pilon-iter"$PRIORCOUNT".fasta $ILLUMINA1 $ILLUMINA2 2> /dev/null | samtools sort -o pilon-iter"$PILONCOUNT".illumina.bam &> /dev/null
-			minimap2 -ax map-ont -t $CORES pilon-iter"$PRIORCOUNT".fasta $NANOPORE 2> minimap2.err | samtools sort -o pilon-iter"$PILONCOUNT".ont.bam &> /dev/null
+			bwa mem -t $CORES pilon-iter"$PRIORCOUNT".fasta $ILLUMINA1 $ILLUMINA2 2> /dev/null | samtools sort -o pilon-iter"$PILONCOUNT".illumina.bam &> samtools.out
+			minimap2 -ax map-ont -t $CORES pilon-iter"$PRIORCOUNT".fasta $NANOPORE 2> minimap2.err | samtools sort -o pilon-iter"$PILONCOUNT".ont.bam &> samtools.out
 			samtools index pilon-iter"$PILONCOUNT".illumina.bam
 			samtools index pilon-iter"$PILONCOUNT".ont.bam
 			java -Xmx"$JAVAMEM" -jar $PILON_PATH --genome pilon-iter"$PRIORCOUNT".fasta --frags pilon-iter"$PILONCOUNT".illumina.bam --nanopore pilon-iter"$PILONCOUNT".ont.bam --output pilon-iter"$PILONCOUNT" --changes > pilon.out 2> pilon.err
