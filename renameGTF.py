@@ -23,7 +23,7 @@ for arg in sys.argv:
 gtfFilename = ".".join(gtf.split(".")[0:-1])
 outfile = open("%s_renamed.gtf" % gtfFilename, "w")
 if len(assemblyID) >= 1:
-	outfile.write("#assembly ID = %s\n" % assemblyID)
+	outfile.write("# assembly ID = %s\n" % assemblyID)
 
 renameDict = {}
 for line in renameTable:
