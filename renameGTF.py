@@ -10,6 +10,7 @@ assemblyID = ""
 for arg in sys.argv:
 	if arg in ["-i","--in"]:
 		ingtf = open(sys.argv[sys.argv.index(arg)+1], "r")
+		gtf = sys.argv[sys.argv.index(arg)+1]
 	elif arg == "--contig-table":
 		renameTable = open(sys.argv[sys.argv.index(arg)+1], "r")
 	elif arg == "--gene-prefix":
@@ -19,7 +20,7 @@ for arg in sys.argv:
 
 #renameTable = open(sys.argv[1], "r")
 #ingtf = open(sys.argv[0], "r")
-gtfFilename = ".".join(ingtf.split("."))[0:-1]
+gtfFilename = ".".join(gtf.split("."))[0:-1]
 outfile = open("%s_renamed.gtf" % gtfFilename, "w")
 if len(assemblyID) >= 1:
 	outfile.write("#assembly ID = %s\n" % assemblyID)
