@@ -43,6 +43,7 @@ for line in ingtf:
 		strand = line.split("\t")[6]
 		frame = line.split("\t")[7]
 		description = line.strip(";").split("\t")[8]
+		newContig = renameDict[contig]
 		if feature != "gene":
 			splitDescription = description.split("; ")
 			for item in splitDescription:
@@ -51,19 +52,22 @@ for line in ingtf:
 					transcript_id = splitSplitDescription[1].strip('''"''')
 				elif splitSplitDescription[1] == "gene_id":
 					gene_id = splitSplitDescription[1].strip('''"''')
+			if len(genePrefix) >= 1:
+				newGene = "genePrefix_%s" % gene_id
+				newTranscript = "genePrefix_%s" % transcript_id
+			else:
+				newGene = gene_id
+				newTranscript = transcript_id
+			outfile.write('''%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\ttranscript_id "%s"; gene_id "%s"\n''' %(newContig, source, feature, startPos, endPos, score, strand, frame, newTranscript, newGene ))
 		else:
 			gene_id = description[0]
-		newContig = renameDict[contig]
-		if len(genePrefix) >= 1:
-			newGene = "genePrefix_%s" % gene_id
-			newTranscript = "genePrefix_%s" % transcript_id
-		else:
-			newGene = gene_id
-			newTranscript = transcript_id
-		if feature == "gene":
+			if len(genePrefix) >= 1:
+				newGene = "genePrefix_%s" % gene_id
+				newTranscript = "genePrefix_%s" % transcript_id
+			else:
+				newGene = gene_id
+				newTranscript = transcript_id
 			outfile.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" %(newContig, source, feature, startPos, endPos, score, strand, frame, newGene ))
-		else:
-			outfile.write('''%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\ttranscript_id "%s"; gene_id "%s"\n''' %(newContig, source, feature, startPos, endPos, score, strand, frame, newTranscript, newGene ))
 
 		#transcript = transcriptSplit2.strip("\"")
 		#gtfDict[transcript] = {"contig":contig, "startPos":startPos, "endPos":endPos, "direction":direction}
