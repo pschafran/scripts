@@ -20,7 +20,7 @@ for arg in sys.argv:
 
 #renameTable = open(sys.argv[1], "r")
 #ingtf = open(sys.argv[0], "r")
-gtfFilename = ".".join(gtf.split("."))[0:-1]
+gtfFilename = ".".join(gtf.split(".")[0:-1])
 outfile = open("%s_renamed.gtf" % gtfFilename, "w")
 if len(assemblyID) >= 1:
 	outfile.write("#assembly ID = %s\n" % assemblyID)
@@ -47,7 +47,7 @@ for line in ingtf:
 		if feature != "gene":
 			splitDescription = description.split("; ")
 			for item in splitDescription:
-				splitSplitDescription = splitDescription.split(" ")
+				splitSplitDescription = item.split(" ")
 				if splitSplitDescription[0] == "transcript_id":
 					transcript_id = splitSplitDescription[1].strip('''"''')
 				elif splitSplitDescription[1] == "gene_id":
@@ -60,7 +60,7 @@ for line in ingtf:
 				newTranscript = transcript_id
 			outfile.write('''%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\ttranscript_id "%s"; gene_id "%s"\n''' %(newContig, source, feature, startPos, endPos, score, strand, frame, newTranscript, newGene ))
 		else:
-			gene_id = description[0]
+			gene_id = description
 			if len(genePrefix) >= 1:
 				newGene = "genePrefix_%s" % gene_id
 			else:
