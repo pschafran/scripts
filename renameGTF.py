@@ -28,7 +28,9 @@ if len(assemblyID) >= 1:
 renameDict = {}
 for line in renameTable:
 	oldContig = line.strip("\n").split("\t")[0]
+	oldContig = oldContig.split(" ")[0]
 	newContig = line.strip("\n").split("\t")[1]
+	newContig = newContig.split(" ")[0]
 	renameDict[oldContig] = newContig
 
 for line in ingtf:
