@@ -53,8 +53,8 @@ for line in ingtf:
 				elif splitSplitDescription[1] == "gene_id":
 					gene_id = splitSplitDescription[1].strip('''"''')
 			if len(genePrefix) >= 1:
-				newGene = "genePrefix_%s" % gene_id
-				newTranscript = "genePrefix_%s" % transcript_id
+				newGene = "%s_%s" % (genePrefix, gene_id)
+				newTranscript = "%s_%s" % (genePrefix, transcript_id)
 			else:
 				newGene = gene_id
 				newTranscript = transcript_id
@@ -62,7 +62,7 @@ for line in ingtf:
 		else:
 			gene_id = description
 			if len(genePrefix) >= 1:
-				newGene = "genePrefix_%s" % gene_id
+				newGene = "%s_%s" % (genePrefix, gene_id)
 			else:
 				newGene = gene_id
 			outfile.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" %(newContig, source, feature, startPos, endPos, score, strand, frame, newGene ))
