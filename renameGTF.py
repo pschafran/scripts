@@ -63,10 +63,8 @@ for line in ingtf:
 			gene_id = description[0]
 			if len(genePrefix) >= 1:
 				newGene = "genePrefix_%s" % gene_id
-				newTranscript = "genePrefix_%s" % transcript_id
 			else:
 				newGene = gene_id
-				newTranscript = transcript_id
 			outfile.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" %(newContig, source, feature, startPos, endPos, score, strand, frame, newGene ))
 
 		#transcript = transcriptSplit2.strip("\"")
