@@ -62,11 +62,16 @@ with open("%s_score%s.gtf" %(gtfFilename,score), "w") as outfile:
 				for gtfline in mainDict[gene]["transcripts"][transcript]["gtf"]:
 					outfile.write(gtfline)
 					#print("%s" % gtfline)
+with open("failed_transcripts_%s.txt" % score, "w") as ftOutfile:
+	for transcript in transcriptsBelowScore:
+		ftOutfile.write("%s\n" % transcript)
+with open("failed_genes_%s.txt" % score, "w") as gnOutfile:
+	for gene in genesBelowScore:
+		gnOutfile.write("%s\n" % gene)
 
 print("Transcripts passed:\t%s" % len(transcriptsAboveScore))
 print("Transcripts failed:\t%s" % len(transcriptsBelowScore))
 print("Genes failed:\t%s" % len(genesBelowScore))
-print("\n")
 print("Failed transcripts written to failed_transcripts_%s.txt" % score)
 print("Failed genes written to failed_genes_%s.txt" % score)
 print("GTF without failed transcripts and genes written to %s_%s.gtf" %(gtfFilename,score))
