@@ -4,7 +4,7 @@
 # Score is any number between 0 and 1.
 # If all transcripts for a gene fall below the score,the gene is removed from the output.
 
-import sys, re
+import sys, re, math
 
 def geomean(xs):
     return math.exp(math.fsum(math.log(x) for x in xs) / len(xs))
