@@ -71,7 +71,7 @@ with open("failed_genes_%s.txt" % score, "w") as gnOutfile:
 
 print("Transcripts passed:\t%s" % len(transcriptsAboveScore))
 print("Transcripts failed:\t%s" % len(transcriptsBelowScore))
-print("Genes passed:\t%s" % (len(mainDict.keys()-len(genesBelowScore))))
+print("Genes passed:\t%s" % (len(mainDict.keys())-len(genesBelowScore)))
 print("Genes failed:\t%s" % len(genesBelowScore))
 print("Failed transcripts written to failed_transcripts_%s.txt" % score)
 print("Failed genes written to failed_genes_%s.txt" % score)
