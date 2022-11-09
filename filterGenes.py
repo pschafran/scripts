@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-# Usage: filterGTFGeneScores.py augustus.hints.gtf score
+# Usage: filterGenes.py augustus.hints.gtf score
 # Score is any number between 0 and 1.
 # If all transcripts for a gene fall below the score,the gene is removed from the output.
 
@@ -9,9 +9,9 @@ import sys, re
 def geomean(xs):
     return math.exp(math.fsum(math.log(x) for x in xs) / len(xs))
 
-gtfFile = sys.argv[0]
+gtfFile = sys.argv[1]
 gtfFilename = ".".join(gtfFile.split(".")[0:-1])
-score = float(sys.argv[1])
+score = float(sys.argv[2])
 if score < 0 or score > 1:
 	print("ERROR: Score must be between 0 and 1")
 
