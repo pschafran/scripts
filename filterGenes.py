@@ -46,7 +46,7 @@ for gene in mainDict:
 			allFail = False
 	if allFail == True:
 		genesBelowScore.append(gene)
-		
+
 if len(transcriptsBelowScore) == 0:
 	print("All transcripts passed. No output generated.\n")
 	exit(0)
@@ -69,4 +69,4 @@ print("Genes failed:\t%s" % len(genesBelowScore))
 print("\n")
 print("Failed transcripts written to failed_transcripts_%s.txt" % score)
 print("Failed genes written to failed_genes_%s.txt" % score)
-print("GTF without failed transcripts and genes written to %s_%s.gtf" %(gtfFilename,score)")
+print("GTF without failed transcripts and genes written to %s_%s.gtf" %(gtfFilename,score))
