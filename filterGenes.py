@@ -11,7 +11,7 @@ def geomean(xs):
 
 gtfFile = sys.argv[0]
 gtfFilename = ".".join(gtfFile.split(".")[0:-1])
-score = sys.argv[1]
+score = float(sys.argv[1])
 if score < 0 or score > 1:
 	print("ERROR: Score must be between 0 and 1")
 
