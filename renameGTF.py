@@ -104,6 +104,7 @@ for contig in gtfDict:
 	for item in sortedStartPos:
 		gtfDict[contig]["sortedGeneList"].append(gtfDict[contig]["startPosDict"][item])
 counter = 0
+gtfDict.update({"conversionDict" : {}})
 for contig in gtfDict:
 	for sorted_gene in gtfDict[contig]["sortedGeneList"]:
 		counter = interval + counter
@@ -112,10 +113,7 @@ for contig in gtfDict:
 			newGene = "%s_g%s" % (genePrefix, formattedCounter)
 		else:
 			newGene = "g%s" % formattedCounter
-		try:
-			gtfDict["conversionDict"].update({sorted_gene : newGene})
-		except:
-			gtfDict.update({"conversionDict" : {}})
+		gtfDict["conversionDict"].update({sorted_gene : newGene})
 
 with open(gtf, "r") as ingtf:
 	for line in ingtf:
