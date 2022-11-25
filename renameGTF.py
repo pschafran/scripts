@@ -153,6 +153,7 @@ with open(gtf, "r") as ingtf:
 				#newGene = gtfDict["conversionDict"][gene_id]
 				newGene = conversionDict[gene_id]
 				outfile.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" %(newContig, source, feature, startPos, endPos, score, strand, frame, newGene ))
-		outfile.write("%s\n" % line)
+		else:
+			outfile.write("%s\n" % line)
 renameTable.close()
 outfile.close()
