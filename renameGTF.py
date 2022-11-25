@@ -20,9 +20,9 @@ for arg in sys.argv:
 	elif arg == "--assembly-id":
 		assemblyID = sys.argv[sys.argv.index(arg)+1]
 	elif arg =="--interval":
-		interval = sys.argv[sys.argv.index(arg)+1]
+		interval = int(sys.argv[sys.argv.index(arg)+1])
 	elif arg =="--digits":
-		digits = sys.argv[sys.argv.index(arg)+1]
+		digits = int(sys.argv[sys.argv.index(arg)+1])
 
 #renameTable = open(sys.argv[1], "r")
 #ingtf = open(sys.argv[0], "r")
