@@ -110,9 +110,9 @@ for contig in gtfDict:
 		counter = interval + counter
 		formattedCounter = '{num:0{width}}'.format(num=counter, width=digits)
 		if len(genePrefix) >= 1:
-			newGene = "%s_g%s" % (genePrefix, formattedCounter)
+			newGene = "%s%s" % (genePrefix, formattedCounter)
 		else:
-			newGene = "g%s" % formattedCounter
+			newGene = formattedCounter
 		conversionDict.update({sorted_gene : newGene})
 print(conversionDict)
 exit(0)
