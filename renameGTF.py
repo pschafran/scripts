@@ -114,8 +114,6 @@ for contig in gtfDict:
 		else:
 			newGene = formattedCounter
 		conversionDict.update({sorted_gene : newGene})
-print(conversionDict)
-exit(0)
 with open(gtf, "r") as ingtf:
 	for line in ingtf:
 		line = line.strip("\n")
@@ -144,13 +142,16 @@ with open(gtf, "r") as ingtf:
 					elif splitSplitDescription[1] == "gene_id":
 						gene_id = splitSplitDescription[1].strip('''"''')
 
-				newGene = gtfDict["conversionDict"][gene_id]
-				newTranscript = "%s.%s" % (gtfDict["conversionDict"][gene_id], transcript_number)
+				#newGene = gtfDict["conversionDict"][gene_id]
+				newGene = conversionDict[gene_id]
+				#newTranscript = "%s.%s" % (gtfDict["conversionDict"][gene_id], transcript_number)
+				newTranscript = "%s.%s" % (conversionDict[gene_id], transcript_number)
 
 				outfile.write('''%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\ttranscript_id "%s"; gene_id "%s"\n''' %(newContig, source, feature, startPos, endPos, score, strand, frame, newTranscript, newGene ))
 			else:
 				gene_id = description
-				newGene = gtfDict["conversionDict"][gene_id]
+				#newGene = gtfDict["conversionDict"][gene_id]
+				newGene = conversionDict[gene_id]
 				outfile.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" %(newContig, source, feature, startPos, endPos, score, strand, frame, newGene ))
 		outfile.write("%s\n" % line)
 renameTable.close()
