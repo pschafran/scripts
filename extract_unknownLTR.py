@@ -18,7 +18,7 @@ output_unknown = open('%s.LTRlib.unknown.fa' % infile, 'w')
 output_known = open('%s.LTRlib.known.fa' % infile, 'w')
 
 for seq in input:
-	if str(seq.id).find('Unknown') != -1:
+	if str(seq.id).find('nknown') != -1:
 		output_unknown.write('>' + str(seq.id) + '\n' + str(seq.seq) + '\n')
 	else:
 		output_known.write('>' + str(seq.id) + '\n' + str(seq.seq) + '\n')
