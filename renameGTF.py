@@ -112,7 +112,10 @@ for contig in gtfDict:
 			newGene = "%s_g%s" % (genePrefix, formattedCounter)
 		else:
 			newGene = "g%s" % formattedCounter
-		gtfDict["conversionDict"].update({sorted_gene : newGene})
+		try:
+			gtfDict["conversionDict"].update({sorted_gene : newGene})
+		except:
+			gtfDict.update({["conversionDict"] : {})
 
 with open(gtf, "r") as ingtf:
 	for line in ingtf:
