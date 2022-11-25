@@ -15,7 +15,7 @@ for arg in sys.argv:
 		assemblyID = sys.argv[sys.argv.index(arg)+1]
 
 gffFilename = ".".join(gff.split(".")[0:-1])
-outfile = open("%s_renamed.gff" % gtfFilename, "w")
+outfile = open("%s_renamed.gff" % gffFilename, "w")
 if len(assemblyID) >= 1:
 	outfile.write("#assembly ID = %s\n" % assemblyID)
 
