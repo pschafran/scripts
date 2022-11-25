@@ -115,7 +115,7 @@ for contig in gtfDict:
 		try:
 			gtfDict["conversionDict"].update({sorted_gene : newGene})
 		except:
-			gtfDict.update({["conversionDict"] : {})
+			gtfDict.update({["conversionDict"] : {}})
 
 with open(gtf, "r") as ingtf:
 	for line in ingtf:
