@@ -3,7 +3,6 @@
 # Remove alternative transcripts from FASTA files
 
 import sys
-from Bio import Seq.IO
 
 seqfile = sys.argv[1]
 filename = ".".join(seqfile.split(".")[:-1])
