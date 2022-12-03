@@ -80,7 +80,7 @@ for targetLine in openTargetFile:
 		openOutFile.write(">%s_pos%s-%s\n" %(targetContig, startPos, endPos))
 	baseCount = 0
 	writeCount = 0
-	seqSubset = seqDict[targetContig][startPos-1:endPos-1]
+	seqSubset = seqDict[targetContig][startPos-1:endPos]
 	if reverse == True:
 		dna = Seq("".join(seqSubset))
 		seqSubset = str(dna.reverse_complement())
