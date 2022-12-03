@@ -83,7 +83,9 @@ for targetLine in openTargetFile:
 	seqSubset = seqDict[targetContig][startPos-1:endPos-1]
 	if reverse == True:
 		dna = Seq("".join(seqSubset))
-		seqSubseq = str(dna.reverse_complement())
+		seqSubset = str(dna.reverse_complement())
+	else:
+		seqSubset = "".join(seqSubset)
 	openOutFile.write(seqSubset)
 	#for base in seqDict[targetContig]:
 	#	baseCount += 1
