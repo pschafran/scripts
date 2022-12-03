@@ -6,6 +6,7 @@
 # Usage: trimFastaBases.py sequence.fasta targetFile.txt
 
 import sys
+from Bio.Seq import Seq
 
 openSeqFile = open(sys.argv[1], "r")
 openOutFile = open("%s_extractedRegions.fasta" % sys.argv[2], "w")
@@ -19,7 +20,8 @@ for line in openTargetFile:
 		exit(1)
 	else:
 		if int(line.strip("\n").split("\t")[1]) > int(line.strip("\n").split("\t")[2]):
-			print("WARNING: Start position comes after end position. Output will be in forward direction\n")
+			pass
+			#print("WARNING: Start position comes after end position. Output will be in forward direction\n")
 			#print(line)
 			#exit(1)
 		elif int(line.strip("\n").split("\t")[1]) <= 0 or int(line.strip("\n").split("\t")[2]) <= 0:
@@ -31,7 +33,7 @@ seqDict = {}
 seqList = []
 for seqLine in openSeqFile:
 	if seqLine.startswith(">"):
-		try: 
+		try:
 			if len(seqList) > 1:
 				seq = "".join(seqList)
 			else:
@@ -47,11 +49,13 @@ if len(seqList) > 1:
 	seq = "".join(seqList)
 else:
 	seq = seqList[0]
-seqDict[seqName] = seq
+#seqDict[seqName] = seq
+seqDict[seqName] = list(seq)
 #for i in seqDict.keys():
 #	print("%s %s" %(i, len(seqDict[i])))
 openTargetFile.seek(0)
 for targetLine in openTargetFile:
+	reverse = False
 	targetContig = targetLine.strip(">\n").split("\t")[0]
 	startPos = int(targetLine.strip(">\n").split("\t")[1])
 	endPos = int(targetLine.strip(">\n").split("\t")[2])
@@ -59,6 +63,7 @@ for targetLine in openTargetFile:
 		tmpPos = endPos
 		endPos = startPos
 		startPos = tmpPos
+		reverse = True
 	# check for bad positions
 	if endPos > len(seqDict[targetContig]):
 		print("ERROR: End position is beyond end of sequence!")
@@ -75,13 +80,18 @@ for targetLine in openTargetFile:
 		openOutFile.write(">%s_pos%s-%s\n" %(targetContig, startPos, endPos))
 	baseCount = 0
 	writeCount = 0
-	for base in seqDict[targetContig]:
-		baseCount += 1
-		if baseCount >= startPos and baseCount <= endPos:
-			openOutFile.write(base)
-			writeCount += 1
-			if writeCount % 80 == 0:
-				openOutFile.write("\n") 
+	seqSubset = seqDict[targetContig][startPos-1:endPos-1]
+	if reverse == True:
+		dna = Seq("".join(seqSubset))
+		seqSubseq = dna.reverse_complement()
+	openOutFile.write(seqSubset)
+	#for base in seqDict[targetContig]:
+	#	baseCount += 1
+	#	if baseCount >= startPos and baseCount <= endPos:
+	#		openOutFile.write(base)
+	#		writeCount += 1
+	#		if writeCount % 80 == 0:
+	#			openOutFile.write("\n")
 	openOutFile.write("\n")
 
 openSeqFile.close()
