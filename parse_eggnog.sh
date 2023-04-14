@@ -33,10 +33,10 @@ PARAMS=()
 # Check for help flag
 if $1=="-h"
 	then echo $help
-	exit(0)
+	exit 0
 elif $1=="--help"
 	then echo $help
-	exit(0)
+	exit 0
 fi
 
 # Determine input is file or string
@@ -48,7 +48,7 @@ fi
 
 if [ ! -f $2 ]
 	then echo "Eggnog annotation file not found"
-	exit(1)
+	exit 1 
 fi
 
 if [ $3 = "ALL" ]
