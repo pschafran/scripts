@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/env python
 
 # Usage: renameFasta.py seqs.fasta names.table
 
@@ -18,7 +18,11 @@ seqNameDict = {}
 with open(names, "r") as inNames:
 	for line in inNames:
 		oldName = line.strip("\n").split("\t")[0]
+		if oldName.startswith(">"):
+			oldName = oldName.strip(">")
 		newName = line.strip("\n").split("\t")[1]
+		if newName.startswith(">"):
+			newName = newName.strip(">")
 		seqNameDict[oldName] = newName
 outfile = open("%s_renamed.%s" % (filename, fileext), "w")
 with open(fasta, "r") as inSeqs:
@@ -29,6 +33,7 @@ with open(fasta, "r") as inSeqs:
 				outfile.write(">%s\n" % seqNameDict[oldName])
 			except KeyError:
 				print("Name missing from conversion table: %s" % oldName)
+				exit(1)
 		else:
 			outfile.write(line)
 outfile.close()
