@@ -10,7 +10,24 @@
 # KEGG_TC, CAZY, BIGG, TAXONOMY, EGGNOG_OG, BEST_EGGNOG_OG, COG, FREE_TEXT
 # or use ALL for whole line
 
+help=```
+For eggnog-mapper v2.1.5 to 2.1.10.
+
+Usage: parse_eggnog.sh query_sequence_id[.txt] [prefix].emapper.annotations column1 column2...columnN
+
+query_sequence_id can be a string of the name of a sequence, or a text file with one sequence name per line.
+
+prefix.emapper.annotations is the eggnog-mapper output file off that name.
+
+You can specify as many columns as you want from the headings below, or "ALL" for the whole line.
+
+Accepted column names: seed_ortholog, evalue, score, eggnog_ogs, max_annot_lvl, cog_category, description, preferred_name, gos, ec, kegg_ko, kegg_pathway, kegg_module, kegg_reaction, kegg_rclass, brite, kegg_tc, cazy, bigg_reaction, pfams
+```
+
+
+
 QUERY=$1
+ANNOTATIONS=$2
 PARAMS=()
 
 # Determine input is file or string
@@ -20,53 +37,56 @@ else
   GREP_TYPE="-w"
 fi
 
-if [ $2 = "ALL" ]
-  then grep -F $GREP_TYPE "$QUERY" /home/ps997/HornwortBase_20210503/Hornworts.emapper.annotations
+if [ ! -f $2 ]
+	then echo "Eggnog annotation file not found"
+	exit(1)
+fi
+
+if [ $3 = "ALL" ]
+  then grep -F $GREP_TYPE "$QUERY" $ANNOTATIONS
 else
   # Convert text command line args to corresponding column number in eggnog file
-  for i in "${@:2}"
-    do if [ $i = "SEED_ORTHOLOG" ]
+  for i in "${@:3}"
+    do if [ $i = "seed_ortholog" ]
       then PARAMS+=(2)
-    elif [ $i = "SEED_EVALUE" ]
+    elif [ $i = "evalue" ]
       then PARAMS+=(3)
-    elif [ $i = "SEED_SCORE" ]
+    elif [ $i = "score" ]
       then PARAMS+=(4)
-    elif [ $i = "BEST_TAX_LEVEL" ]
+    elif [ $i = "eggnog_ogs" ]
       then PARAMS+=(5)
-    elif [ $i = "PREFERRED_NAME" ]
+    elif [ $i = "max_annot_lvl" ]
       then PARAMS+=(6)
-    elif [ $i = "GO" ]
+    elif [ $i = "cog_category" ]
       then PARAMS+=(7)
-    elif [ $i = "EC" ]
+    elif [ $i = "description" ]
       then PARAMS+=(8)
-    elif [ $i = "KEGG_KO" ]
+    elif [ $i = "preferred_name" ]
       then PARAMS+=(9)
-    elif [ $i = "KEGG_PATHWAY" ]
+    elif [ $i = "gos" ]
       then PARAMS+=(10)
-    elif [ $i = "KEGG_MODULE" ]
+    elif [ $i = "ec" ]
       then PARAMS+=(11)
-    elif [ $i = "KEGG_REACTION" ]
+    elif [ $i = "kegg_ko" ]
       then PARAMS+=(12)
-    elif [ $i = "KEGG_RCLASS" ]
+    elif [ $i = "kegg_pathway" ]
       then PARAMS+=(13)
-    elif [ $i = "BRITE" ]
+    elif [ $i = "kegg_module" ]
       then PARAMS+=(14)
-    elif [ $i = "KEGG_TC" ]
+    elif [ $i = "kegg_reaction" ]
       then PARAMS+=(15)
-    elif [ $i = "CAZY" ]
+    elif [ $i = "kegg_rclass" ]
       then PARAMS+=(16)
-    elif [ $i = "BIGG" ]
+    elif [ $i = "brite" ]
       then PARAMS+=(17)
-    elif [ $i = "TAXONOMY" ]
+    elif [ $i = "kegg_tc" ]
       then PARAMS+=(18)
-    elif [ $i = "EGGNOG_OG" ]
+    elif [ $i = "cazy" ]
       then PARAMS+=(19)
-    elif [ $i = "BEST_EGGNOG_OG" ]
+    elif [ $i = "bigg_reaction" ]
       then PARAMS+=(20)
-    elif [ $i = "COG" ]
+    elif [ $i = "pfams" ]
       then PARAMS+=(21)
-    elif [ $i = "FREE_TEXT" ]
-      then PARAMS+=(22)
     fi
   done
 
@@ -81,5 +101,5 @@ else
     DELIM=","
   done
 
-  grep -F $GREP_TYPE "$QUERY" /home/ps997/HornwortBase_20210503/Hornworts.emapper.annotations | cut -f 1,"$FIELDS"
+  grep -F $GREP_TYPE "$QUERY" $ANNOTATIONS | cut -f 1,"$FIELDS"
 fi
