@@ -31,10 +31,10 @@ ANNOTATIONS=$2
 PARAMS=()
 
 # Check for help flag
-if $1=="-h"
+if [ $1 == "-h" ]
 	then echo $help
 	exit 0
-elif $1=="--help"
+elif [ $1 == "--help" ]
 	then echo $help
 	exit 0
 fi
@@ -48,7 +48,7 @@ fi
 
 if [ ! -f $2 ]
 	then echo "Eggnog annotation file not found"
-	exit 1 
+	exit 1
 fi
 
 if [ $3 = "ALL" ]
