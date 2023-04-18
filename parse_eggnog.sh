@@ -10,19 +10,7 @@
 # KEGG_TC, CAZY, BIGG, TAXONOMY, EGGNOG_OG, BEST_EGGNOG_OG, COG, FREE_TEXT
 # or use ALL for whole line
 
-#help=```
-#For eggnog-mapper v2.1.5 to 2.1.10.
-#
-#Usage: parse_eggnog.sh query_sequence_id[.txt] [prefix].emapper.annotations column1 column2...columnN
-#
-#query_sequence_id can be a string of the name of a sequence, or a text file with one sequence name per line.
-#
-#prefix.emapper.annotations is the eggnog-mapper output file off that name.
-#
-#You can specify as many columns as you want from the headings below, or "ALL" for the whole line.
-#
-#Accepted column names: seed_ortholog, evalue, score, eggnog_ogs, max_annot_lvl, cog_category, description, preferred_name, gos, ec, kegg_ko, kegg_pathway, kegg_module, kegg_reaction, kegg_rclass, brite, kegg_tc, cazy, bigg_reaction, pfams
-#```
+help="For eggnog-mapper v2.1.5 to 2.1.10.\n\nUsage: parse_eggnog.sh query_sequence_id[.txt] [prefix].emapper.annotations column1 column2...columnN\n\nquery_sequence_id can be a string of the name of a sequence, or a text file with one sequence name per line.\n\nprefix.emapper.annotations is the eggnog-mapper output file off that name.\n\nYou can specify as many columns as you want from the headings below, or "ALL" for the whole line.\n\nAccepted column names: seed_ortholog, evalue, score, eggnog_ogs, max_annot_lvl, cog_category, description, preferred_name, gos, ec, kegg_ko, kegg_pathway, kegg_module, kegg_reaction, kegg_rclass, brite, kegg_tc, cazy, bigg_reaction, pfams"
 
 
 
@@ -32,10 +20,10 @@ PARAMS=()
 
 # Check for help flag
 if [ $1 == "-h" ]
-	then echo $help
+	then echo -e $help
 	exit 0
 elif [ $1 == "--help" ]
-	then echo $help
+	then echo -e $help
 	exit 0
 fi
 
