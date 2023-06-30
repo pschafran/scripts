@@ -1,7 +1,7 @@
 #! /home/ps997/miniconda3/bin/python
 # Needs to run with python 3 on our server!!!
 
-# Usage: plotCovAlongContigs.py depth_output_from_samtools.txt SmoothingFactor (% of data to average across, must be between 1-100. Suggested setting from 1-15)
+# Usage: plotCovAlongContigs.py depth_output_from_samtools.txt sliding_window_size
 
 import numpy as np
 import matplotlib
@@ -19,13 +19,13 @@ def running_mean(x, N):
 	return (cumsum[N:] - cumsum[:-N]) / float(N)
 
 file = open(sys.argv[1],"r")
-smoothingFactor = float(sys.argv[2])
-if smoothingFactor < 1:
-	print("WARNING: Smoothing was set to less than 1. Now set to 1.")
-	smoothingFactor = 1
-if smoothingFactor > 100:
-	print("WARNING: Smoothing was set to greater than 100. Now set to 100.")
-	smoothingFactor = 100
+avgingWindowSize = int(sys.argv[2])
+#if smoothingFactor < 1:
+#	print("WARNING: Smoothing was set to less than 1. Now set to 1.")
+#	smoothingFactor = 1
+#if smoothingFactor > 100:
+#	print("WARNING: Smoothing was set to greater than 100. Now set to 100.")
+#	smoothingFactor = 100
 
 contigList = []
 posList = []
@@ -99,14 +99,14 @@ for length in sorted(contigLengthList, reverse=True):
 		n50list.append(length)
 		n50size += length
 n50 = np.min(n50list)
-n50 = 0
+#n50 = 0
 print("Assembly Size: %s" %(assemblySize))
 
 movAvgDict = {}
 print('Smoothing data...')
 for key in contigDict.keys():
-	smoothingBases = int(len(contigDict[key][1]) * (smoothingFactor/100))
-	movAvgDict[key] = [np.array(running_mean(contigDict[key][0], smoothingBases)).tolist(), np.array(running_mean(contigDict[key][1], smoothingBases)).tolist()]
+	#smoothingBases = int(len(contigDict[key][1]) * (smoothingFactor/100))
+	movAvgDict[key] = [np.array(running_mean(contigDict[key][0], avgingWindowSize)).tolist(), np.array(running_mean(contigDict[key][1], avgingWindowSize)).tolist()]
 
 print('Plotting charts...')
 fig, ax = plt.subplots(1,1)
@@ -125,7 +125,7 @@ plt.close()
 for key in contigDict.keys():
 	baseline = np.array(contigDict[key][1])
 	fig, ax = plt.subplots(1,1)
-	ax.plot(contigDict[key][0], contigDict[key][1], color = "blue", linewidth = 0.5)
+	ax.plot(movAvgDict[key][0], movAvgDict[key][1], color = "blue", linewidth = 0.5)
 	#ax.plot(movAvgDict[key][0], movAvgDict[key][1], color = "blue")
 	ax.hlines(contigDict[key][2]+contigDict[key][3], xmin = np.min(contigDict[key][0]), xmax = np.max(contigDict[key][0]), color = "yellow", label = "1 SD")
 	ax.hlines(contigDict[key][2]+(2*contigDict[key][3]), xmin = np.min(contigDict[key][0]), xmax = np.max(contigDict[key][0]), color = "orange", label = "2 SD")
@@ -139,7 +139,7 @@ for key in contigDict.keys():
 	ax.set_axisbelow(True)
 	#ax.text(0.7, 1.1, "Median Depth: %d" %(contigDict[key][2]), horizontalalignment='left', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 	#ax.text(0.7, 1.05, "Standard Deviation: %d" %(contigDict[key][3]), horizontalalignment='left', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
-	plt.savefig("%s_%s.pdf" %(key,smoothingFactor),format = "pdf")
+	plt.savefig("%s_%s.pdf" %(key,avgingWindowSize),format = "pdf")
 	plt.close()
 
 for key in contigDict.keys():
@@ -150,6 +150,9 @@ for key in contigDict.keys():
 	ax.set_title("%s" %(key))
 	plt.grid(which='major',axis='both',linestyle='dashed')
 	ax.set_axisbelow(True)
+	plt.xlim([depthLowerBound, depthUpperBound])
+	ax.text(0.95,0.95, "Median: %d" %(depthMedian), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
+	ax.text(0.95,0.9, "Mode: %d" %(depthMode), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 	plt.savefig("%s_depth_hist.pdf" %(key),format = "pdf")
 	plt.close()
 
@@ -167,7 +170,7 @@ if len(contigDict.keys()) > 1:
 				ax[index].set_ylabel("Read Depth")
 			index += 1
 	ax[index-1].set_xlabel("Position")
-	plt.savefig("%s_n50contigs_%s.pdf" %((sys.argv[1].split(".txt")[0]), smoothingFactor),format = "pdf")
+	plt.savefig("%s_n50contigs_%skb.pdf" %((sys.argv[1].split(".txt")[0]), avgingWindowSize),format = "pdf")
 	plt.close()
 
 	fig, ax = plt.subplots(len(n50list), 1, sharex=True, sharey=True, tight_layout=True, figsize = (8,len(n50list)))
@@ -186,7 +189,7 @@ if len(contigDict.keys()) > 1:
 				ax[index].set_ylabel("Read Depth")
 			index += 1
 	ax[index-1].set_xlabel("Position")
-	plt.savefig("%s_n50contigs_logCov_%s.pdf" %((sys.argv[1].split(".txt")[0]), smoothingFactor),format = "pdf")
+	plt.savefig("%s_n50contigs_logCov_%skb.pdf" %((sys.argv[1].split(".txt")[0]), avgingWindowSize),format = "pdf")
 	plt.close()
 
 	fig = plt.figure()
@@ -196,5 +199,5 @@ if len(contigDict.keys()) > 1:
 		if len(contigDict[key][0]) >= n50:
 			ax.plot(movAvgDict[key][0], movAvgDict[key][1], zs=index, zdir='y', label= "%s" %(key))
 			index -= 1
-	plt.savefig("%s_3Dn50contigs_%s.pdf" %(sys.argv[1].split(".txt")[0], smoothingFactor),format = "pdf")
+	plt.savefig("%s_3Dn50contigs_%skb.pdf" %(sys.argv[1].split(".txt")[0], avgingWindowSize),format = "pdf")
 	plt.close()
