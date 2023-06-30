@@ -151,8 +151,8 @@ for key in contigDict.keys():
 	plt.grid(which='major',axis='both',linestyle='dashed')
 	ax.set_axisbelow(True)
 	plt.xlim([depthLowerBound, depthUpperBound])
-	ax.text(0.95,0.95, "Median: %d" %(depthMedian), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
-	ax.text(0.95,0.9, "Mode: %d" %(depthMode), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
+	ax.text(0.95,0.95, "Median: %d" %(np.median(contigDict[key][1])), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
+	ax.text(0.95,0.9, "Mode: %d" %(stats.mode(contigDict[key][1])), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 	plt.savefig("%s_depth_hist.pdf" %(key),format = "pdf")
 	plt.close()
 
