@@ -144,7 +144,7 @@ for key in contigDict.keys():
 
 for key in contigDict.keys():
 	fig, ax = plt.subplots(1,1)
-	ax.hist(contigDict[key][1], bins = 100, density = True)
+	ax.hist(contigDict[key][1], bins = depthBins, density = True)
 	ax.set_xlabel("Read Depth")
 	ax.set_ylabel("Density")
 	ax.set_title("%s" %(key))
@@ -170,7 +170,7 @@ if len(contigDict.keys()) > 1:
 				ax[index].set_ylabel("Read Depth")
 			index += 1
 	ax[index-1].set_xlabel("Position")
-	plt.savefig("%s_n50contigs_%skb.pdf" %((sys.argv[1].split(".txt")[0]), avgingWindowSize),format = "pdf")
+	plt.savefig("%s_n50contigs_%skp.pdf" %((sys.argv[1].split(".txt")[0]), (avgingWindowSize/1000)),format = "pdf")
 	plt.close()
 
 	fig, ax = plt.subplots(len(n50list), 1, sharex=True, sharey=True, tight_layout=True, figsize = (8,len(n50list)))
@@ -189,7 +189,7 @@ if len(contigDict.keys()) > 1:
 				ax[index].set_ylabel("Read Depth")
 			index += 1
 	ax[index-1].set_xlabel("Position")
-	plt.savefig("%s_n50contigs_logCov_%skb.pdf" %((sys.argv[1].split(".txt")[0]), avgingWindowSize),format = "pdf")
+	plt.savefig("%s_n50contigs_logCov_%skb.pdf" %((sys.argv[1].split(".txt")[0]), (avgingWindowSize/1000)),format = "pdf")
 	plt.close()
 
 	fig = plt.figure()
@@ -199,5 +199,5 @@ if len(contigDict.keys()) > 1:
 		if len(contigDict[key][0]) >= n50:
 			ax.plot(movAvgDict[key][0], movAvgDict[key][1], zs=index, zdir='y', label= "%s" %(key))
 			index -= 1
-	plt.savefig("%s_3Dn50contigs_%skb.pdf" %(sys.argv[1].split(".txt")[0], avgingWindowSize),format = "pdf")
+	plt.savefig("%s_3Dn50contigs_%skb.pdf" %(sys.argv[1].split(".txt")[0], (avgingWindowSize/1000)),format = "pdf")
 	plt.close()
