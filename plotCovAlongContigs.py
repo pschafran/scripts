@@ -181,8 +181,7 @@ if len(contigDict.keys()) > 1:
 	#		baseline = np.array(movAvgDict[key][1])
 	#		ax[index].plot(movAvgDict[key][0], movAvgDict[key][1])
 	#		#ax[index].plot(contigDict[key][6], baseline[contigDict[key][6]], color = "red")
-	#		ax[index].text(1.01, 0.5, key, horizontalalignment='left', verticalalignment='center',transform=ax[index].transAxes, bbox=dict(facecolor='white', edgecolor='white', 
-alpha=0.5))
+	#		ax[index].text(1.01, 0.5, key, horizontalalignment='left', verticalalignment='center',transform=ax[index].transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 	#		ax[index].spines['right'].set_visible(False)
 	#		ax[index].spines['top'].set_visible(False)
 	#		ax[index].set_yscale('log')
