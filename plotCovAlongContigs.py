@@ -139,7 +139,7 @@ for key in contigDict.keys():
 	ax.set_axisbelow(True)
 	#ax.text(0.7, 1.1, "Median Depth: %d" %(contigDict[key][2]), horizontalalignment='left', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 	#ax.text(0.7, 1.05, "Standard Deviation: %d" %(contigDict[key][3]), horizontalalignment='left', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
-	plt.savefig("%s_%skbp.pdf" %(key,(avgingWindowSize/1000),format = "pdf")
+	plt.savefig("%s_%skbp.pdf" %(key,(avgingWindowSize/1000)),format = "pdf")
 	plt.close()
 
 for key in contigDict.keys():
