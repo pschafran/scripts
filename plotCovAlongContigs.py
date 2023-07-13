@@ -110,7 +110,7 @@ for key in contigDict.keys():
 	contigDict[key].append(np.median(contigDict[key][1])) # contigDict[key][2]
 	contigDict[key].append(np.std(contigDict[key][1])) # contigDict[key][3]
 	contigDict[key].append(np.min(contigDict[key][1])) # contigDict[key][4]
-	contigDict[key].append(np.max(contigDict[key][1])) # contigDict[key[5]
+	contigDict[key].append(np.max(contigDict[key][1])) # contigDict[key][5]
 #	if any(x > contigDict[key][2]+(3*contigDict[key][3]) for x in contigDict[key][1]):
 		#print('	%s' %(key))
 		#outfile = open("%s_hiCovRegions.txt" %(key), "w")
@@ -211,8 +211,12 @@ for key in contigDict.keys():
 	plt.close()
 
 for key in contigDict.keys():
+	contigMin = min(contigDict[key][1])
+	contigMax = max(contigDict[key][1])
+	print(contigMin)
+	print(contigMax)
 	fig, ax = plt.subplots(1,1)
-	ax.hist(random.sample(contigDict[key][1],k=10000), bins = range(int(min(contigDict[key][1])), max(int(contigDict[key][1])) + 5, 5), density = True)
+	ax.hist(random.sample(contigDict[key][1],k=10000), bins = range(int(contigMin), int(contigMax + 5), 5), density = True)
 	ax.set_xlabel("Read Depth")
 	ax.set_ylabel("Density")
 	ax.set_title("%s" %(key))
