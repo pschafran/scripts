@@ -140,11 +140,11 @@ if xMax == False:
 else:
 	depthUpperBound = xMax
 depthRange = depthMax- depthMin
-depthBins = int(depthRange/5)
-if depthBins < 100:
-	depthBins = int(depthRange)
-	if depthBins == 0:
-		depthBins = 1
+#depthBins = int(depthRange/5)
+#if depthBins < 100:
+#	depthBins = int(depthRange)
+#	if depthBins == 0:
+#		depthBins = 1
 if yMin == False:
 	yMin = int(depthMin)
 if yMax == False:
@@ -177,7 +177,7 @@ print("xMax: %s" % depthUpperBound)
 print("yMin: %s" % yMin)
 print("yMax: %s" % yMax)
 fig, ax = plt.subplots(1,1)
-ax.hist(depthListRand, bins = bins = range(min(depthListRand), max(depthListRand) + 5, 5)), density = True)
+ax.hist(depthListRand, bins = range(min(depthListRand), max(depthListRand) + 5, 5)), density = True)
 ax.set_xlabel("Read Depth")
 ax.set_ylabel("Density")
 ax.set_title("Read Depth Across All Sites")
