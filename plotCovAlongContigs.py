@@ -1,7 +1,19 @@
 #! /home/ps997/miniconda3/bin/python
 # Needs to run with python 3 on our server!!!
 
-# Usage: plotCovAlongContigs.py depth_output_from_samtools.txt sliding_window_size
+# Usage: plotCovAlongContigs.py -i depth_output_from_samtools.txt [options]
+
+help ='''Usage:
+plotCovAlongContigs.py -i depth_output_from_samtools.txt [options]
+
+Options:
+-i, --input	text file containing depth data in 3-column format (i.e. output from samtools depth)
+-w, --window-size	size of sliding window to average depth over (default: 0.05% of genome size)
+-y, --y-min	minimum y-axis value for coverage plots (default: 0)
+-Y, --y-max	maximum y-axis value for coverage plots (default: maximum value of the data)
+-x, --x-min	minimum x-axis value for density plots (default: 0)
+-X, --x-max	maximum x-axis value for density plots (default: median coverage + 100)
+'''
 
 import numpy as np
 import matplotlib
@@ -18,8 +30,34 @@ def running_mean(x, N):
 	cumsum = np.cumsum(np.insert(x, 0, 0))
 	return (cumsum[N:] - cumsum[:-N]) / float(N)
 
-file = open(sys.argv[1],"r")
-avgingWindowSize = int(sys.argv[2])
+input = False
+avgingWindowSize = False
+yMin = False
+yMax = False
+xMin = False
+xMax = False
+
+index = 1
+for item in sys.argv:
+	if item in ["-i","--input"]:
+		input = sys.argv[index+1]
+	elif item in ["-w", "--window-size"]:
+		avgingWindowSize = int(sys.argv[index+1])
+	elif item in ["-y","--y-min"]:
+		yMin = sys.argv[index+1]
+	elif item in ["-Y","--y-max"]:
+		yMax = sys.argv[index+1]
+	elif item in ["-x","--x-min"]:
+		xMin = sys.argv[index+1]
+	elif item in ["-X","--x-max"]:
+		xMax = sys.argv[index+1]
+	index+=1
+
+if input == False:
+	print("ERROR: No input file provided")
+	exit(1)
+
+file = open(input,"r")
 #if smoothingFactor < 1:
 #	print("WARNING: Smoothing was set to less than 1. Now set to 1.")
 #	smoothingFactor = 1
@@ -78,16 +116,27 @@ depthStd = np.std(depthList)
 depthMin = np.min(depthList)
 depthMax = np.max(depthList)
 depthMode = stats.mode(depthList)[0][0]
-depthRange = depthMax - depthMin
-depthLowerBound = depthMedian - 100
-if depthLowerBound < 0:
-	depthLowerBound = 0
-depthUpperBound = depthMedian + 100
+#depthRange = depthMax - depthMin
+if xMin == False:
+	depthLowerBound = depthMedian - 100
+	if depthLowerBound < 0:
+		depthLowerBound = 0
+else:
+	depthLowerBound = xMin
+if xMax == False:
+	depthUpperBound = depthMedian + 100
+else:
+	depthUpperBound = xMax
+depthRange = depthUpperBound - depthLowerBound
 depthBins = int(depthRange/5)
 if depthBins < 100:
 	depthBins = int(depthRange)
 	if depthBins == 0:
 		depthBins = 1
+if yMin == False:
+	yMin = depthMin
+if yMax == False:
+	yMax = depthMax
 
 n50size = 0
 n50list = []
@@ -137,6 +186,7 @@ for key in contigDict.keys():
 	#ax.set_ylim(ymin=(contigDict[key][4] - 100), ymax = (contigDict[key][5] + 100))
 	ax.set_yscale('log')
 	ax.set_axisbelow(True)
+	plt.ylim([yMin,yMax])
 	#ax.text(0.7, 1.1, "Median Depth: %d" %(contigDict[key][2]), horizontalalignment='left', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 	#ax.text(0.7, 1.05, "Standard Deviation: %d" %(contigDict[key][3]), horizontalalignment='left', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 	plt.savefig("%s_%skbp.pdf" %(key,(avgingWindowSize/1000)),format = "pdf")
@@ -170,6 +220,7 @@ if len(contigDict.keys()) > 1:
 				ax[index].set_ylabel("Read Depth")
 			index += 1
 	ax[index-1].set_xlabel("Position")
+	plt.ylim([yMin,yMax])
 	plt.savefig("%s_all_contigs_%skbp.pdf" %((sys.argv[1].split(".txt")[0]), (avgingWindowSize/1000)),format = "pdf")
 	plt.close()
 
