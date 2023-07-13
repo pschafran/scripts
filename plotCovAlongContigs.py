@@ -52,13 +52,13 @@ for item in sys.argv:
 	elif item in ["-w", "--window-size"]:
 		avgingWindowSize = int(sys.argv[index+1])
 	elif item in ["-y","--y-min"]:
-		yMin = float(sys.argv[index+1])
+		yMin = int(sys.argv[index+1])
 	elif item in ["-Y","--y-max"]:
-		yMax = float(sys.argv[index+1])
+		yMax = int(sys.argv[index+1])
 	elif item in ["-x","--x-min"]:
-		xMin = float(sys.argv[index+1])
+		xMin = int(sys.argv[index+1])
 	elif item in ["-X","--x-max"]:
-		xMax = float(sys.argv[index+1])
+		xMax = int(sys.argv[index+1])
 	index+=1
 
 if input == False:
@@ -170,8 +170,8 @@ for key in contigDict.keys():
 	movAvgDict[key] = [np.array(running_mean(contigDict[key][0], avgingWindowSize)).tolist(), np.array(running_mean(contigDict[key][1], avgingWindowSize)).tolist()]
 
 print('Plotting charts...')
-print("xMin: %s" % xMin)
-print("xMax: %s" % xMax)
+print("xMin: %s" % depthLowerBound)
+print("xMax: %s" % depthUpperBound)
 print("yMin: %s" % yMin)
 print("yMax: %s" % yMax)
 fig, ax = plt.subplots(1,1)
@@ -181,7 +181,7 @@ ax.set_ylabel("Density")
 ax.set_title("Read Depth Across All Sites")
 plt.grid(which='major',axis='both',linestyle='dashed')
 ax.set_axisbelow(True)
-plt.xlim(depthLowerBound, depthUpperBound)
+ax.set_xlim(depthLowerBound, depthUpperBound)
 ax.text(0.95,0.95, "Median: %d" %(depthMedian), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 ax.text(0.95,0.9, "Mode: %d" %(depthMode), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 plt.savefig("%s_depth_hist.pdf" %(filename),format = "pdf")
@@ -216,7 +216,7 @@ for key in contigDict.keys():
 	ax.set_title("%s" %(key))
 	plt.grid(which='major',axis='both',linestyle='dashed')
 	ax.set_axisbelow(True)
-	plt.xlim([depthLowerBound, depthUpperBound])
+	ax.set_xlim(xmin = depthLowerBound, xmax = depthUpperBound)
 	ax.text(0.95,0.95, "Median: %d" %(np.median(contigDict[key][1])), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 	ax.text(0.95,0.9, "Mode: %d" %(stats.mode(contigDict[key][1])[0][0]), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 	plt.savefig("%s_depth_hist.pdf" %(key),format = "pdf")
@@ -236,7 +236,7 @@ if len(contigDict.keys()) > 1:
 				ax[index].set_ylabel("Read Depth")
 			index += 1
 	ax[index-1].set_xlabel("Position")
-	plt.ylim(yMin,yMax)
+	ax.set_ylim(ymin = yMin, ymax = yMax)
 	plt.savefig("%s_all_contigs_%skbp.pdf" %(filename, (avgingWindowSize/1000)),format = "pdf")
 	plt.close()
 
