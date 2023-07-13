@@ -225,18 +225,18 @@ for key in contigDict.keys():
 	plt.close()
 
 if len(contigDict.keys()) > 1:
-	fig, ax = plt.subplots(len(n50list), 1, sharex=True, sharey=True, tight_layout=True, figsize = (8,len(n50list)))
+	fig, ax = plt.subplots(len(contigDict.keys()), 1, sharex=True, sharey=True, tight_layout=True, figsize = (8,len(contigDict.keys())))
 	index = 0
 	for key in movAvgDict.keys():
-		halfway = int(len(n50list)/2)
-		if len(contigDict[key][0]) >= n50:
-			ax[index].plot(movAvgDict[key][0], movAvgDict[key][1])
-			ax[index].text(1.01, 0.5, key, horizontalalignment='left', verticalalignment='center',transform=ax[index].transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
-			ax[index].spines['right'].set_visible(False)
-			ax[index].spines['top'].set_visible(False)
-			if index == halfway:
-				ax[index].set_ylabel("Read Depth")
-			index += 1
+		halfway = int(len(contigDict.keys())/2)
+		#if len(contigDict[key][0]) >= n50:
+		ax[index].plot(movAvgDict[key][0], movAvgDict[key][1])
+		ax[index].text(1.01, 0.5, key, horizontalalignment='left', verticalalignment='center',transform=ax[index].transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
+		ax[index].spines['right'].set_visible(False)
+		ax[index].spines['top'].set_visible(False)
+		if index == halfway:
+			ax[index].set_ylabel("Read Depth")
+		index += 1
 	ax[index-1].set_xlabel("Position")
 	ax.set_ylim(ymin = yMin, ymax = yMax)
 	plt.savefig("%s_all_contigs_%skbp.pdf" %(filename, (avgingWindowSize/1000)),format = "pdf")
