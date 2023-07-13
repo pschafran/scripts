@@ -15,14 +15,6 @@ Options:
 -X, --x-max	maximum x-axis value for density plots (default: median coverage + 100)
 '''
 
-if "-h" in sys.argv:
-	print(help)
-	exit(0)
-if len(sys.argv) < 2:
-	print("ERROR: too few arguments")
-	print(help)
-	exit(1)
-
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
@@ -37,6 +29,14 @@ from mpl_toolkits.mplot3d import Axes3D
 def running_mean(x, N):
 	cumsum = np.cumsum(np.insert(x, 0, 0))
 	return (cumsum[N:] - cumsum[:-N]) / float(N)
+
+if "-h" in sys.argv:
+	print(help)
+	exit(0)
+if len(sys.argv) < 2:
+	print("ERROR: too few arguments")
+	print(help)
+	exit(1)
 
 input = False
 avgingWindowSize = False
