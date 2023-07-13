@@ -37,7 +37,7 @@ yMax = False
 xMin = False
 xMax = False
 
-index = 1
+index = 0
 for item in sys.argv:
 	if item in ["-i","--input"]:
 		input = sys.argv[index+1]
@@ -150,7 +150,8 @@ for length in sorted(contigLengthList, reverse=True):
 n50 = np.min(n50list)
 #n50 = 0
 print("Assembly Size: %s" %(assemblySize))
-
+if avgingWindowSize == False:
+	avgingWindowSize = int(assemblySize * 0.005)
 movAvgDict = {}
 print('Smoothing data...')
 for key in contigDict.keys():
@@ -165,10 +166,10 @@ ax.set_ylabel("Density")
 ax.set_title("Read Depth Across All Sites")
 plt.grid(which='major',axis='both',linestyle='dashed')
 ax.set_axisbelow(True)
-plt.xlim([depthLowerBound, depthUpperBound])
+plt.xlim(depthLowerBound, depthUpperBound)
 ax.text(0.95,0.95, "Median: %d" %(depthMedian), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 ax.text(0.95,0.9, "Mode: %d" %(depthMode), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
-plt.savefig("%s_depth_hist.pdf" %(sys.argv[1].split(".txt")[0]),format = "pdf")
+plt.savefig("%s_depth_hist.pdf" %(input.split(".txt")[0]),format = "pdf")
 plt.close()
 
 for key in contigDict.keys():
@@ -186,7 +187,7 @@ for key in contigDict.keys():
 	#ax.set_ylim(ymin=(contigDict[key][4] - 100), ymax = (contigDict[key][5] + 100))
 	ax.set_yscale('log')
 	ax.set_axisbelow(True)
-	plt.ylim([yMin,yMax])
+	plt.ylim(yMin,yMax)
 	#ax.text(0.7, 1.1, "Median Depth: %d" %(contigDict[key][2]), horizontalalignment='left', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 	#ax.text(0.7, 1.05, "Standard Deviation: %d" %(contigDict[key][3]), horizontalalignment='left', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 	plt.savefig("%s_%skbp.pdf" %(key,(avgingWindowSize/1000)),format = "pdf")
@@ -202,7 +203,7 @@ for key in contigDict.keys():
 	ax.set_axisbelow(True)
 	plt.xlim([depthLowerBound, depthUpperBound])
 	ax.text(0.95,0.95, "Median: %d" %(np.median(contigDict[key][1])), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
-	ax.text(0.95,0.9, "Mode: %d" %(stats.mode(contigDict[key][1])), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
+	ax.text(0.95,0.9, "Mode: %d" %(stats.mode(contigDict[key][1][0])), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 	plt.savefig("%s_depth_hist.pdf" %(key),format = "pdf")
 	plt.close()
 
@@ -220,8 +221,8 @@ if len(contigDict.keys()) > 1:
 				ax[index].set_ylabel("Read Depth")
 			index += 1
 	ax[index-1].set_xlabel("Position")
-	plt.ylim([yMin,yMax])
-	plt.savefig("%s_all_contigs_%skbp.pdf" %((sys.argv[1].split(".txt")[0]), (avgingWindowSize/1000)),format = "pdf")
+	plt.ylim(yMin,yMax)
+	plt.savefig("%s_all_contigs_%skbp.pdf" %(input.split(".txt")[0]), (avgingWindowSize/1000)),format = "pdf")
 	plt.close()
 
 	#fig, ax = plt.subplots(len(n50list), 1, sharex=True, sharey=True, tight_layout=True, figsize = (8,len(n50list)))
