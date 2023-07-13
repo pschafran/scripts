@@ -15,6 +15,14 @@ Options:
 -X, --x-max	maximum x-axis value for density plots (default: median coverage + 100)
 '''
 
+if "-h" in sys.argv:
+	print(help)
+	exit(0)
+if len(sys.argv) < 2:
+	print("ERROR: too few arguments")
+	print(help)
+	exit(1)
+
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
@@ -55,6 +63,7 @@ for item in sys.argv:
 
 if input == False:
 	print("ERROR: No input file provided")
+	print(help)
 	exit(1)
 filename = input.split(".txt")[0]
 
