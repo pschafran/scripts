@@ -177,7 +177,7 @@ print("xMax: %s" % depthUpperBound)
 print("yMin: %s" % yMin)
 print("yMax: %s" % yMax)
 fig, ax = plt.subplots(1,1)
-ax.hist(depthListRand, bins = range(min(depthListRand), max(depthListRand) + 5, 5)), density = True)
+ax.hist(depthListRand, bins = range(min(depthListRand), max(depthListRand) + 5, 5), density = True)
 ax.set_xlabel("Read Depth")
 ax.set_ylabel("Density")
 ax.set_title("Read Depth Across All Sites")
@@ -212,7 +212,7 @@ for key in contigDict.keys():
 
 for key in contigDict.keys():
 	fig, ax = plt.subplots(1,1)
-	ax.hist(random.sample(contigDict[key][1],10000), bins = range(min(contigDict[key][1]), max(contigDict[key][1]) + 5, 5)), density = True)
+	ax.hist(random.sample(contigDict[key][1],10000), bins = range(min(contigDict[key][1]), max(contigDict[key][1]) + 5, 5), density = True)
 	ax.set_xlabel("Read Depth")
 	ax.set_ylabel("Density")
 	ax.set_title("%s" %(key))
