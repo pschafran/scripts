@@ -128,7 +128,7 @@ if xMax == False:
 	depthUpperBound = depthMedian + 100
 else:
 	depthUpperBound = xMax
-depthRange = depthUpperBound - depthLowerBound
+depthRange = depthMax- depthMin
 depthBins = int(depthRange/5)
 if depthBins < 100:
 	depthBins = int(depthRange)
