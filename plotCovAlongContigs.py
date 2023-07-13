@@ -208,7 +208,7 @@ for key in contigDict.keys():
 	ax.set_title("%s" %(key))
 	plt.grid(which='major',axis='both',linestyle='dashed')
 	#ax.set_ylim(ymin=(contigDict[key][4] - 100), ymax = (contigDict[key][5] + 100))
-	ax.set_yscale('log')
+	#ax.set_yscale('log')
 	ax.set_axisbelow(True)
 	ax.set_ylim(ymin = yMin,ymax = yMax)
 	#ax.text(0.7, 1.1, "Median Depth: %d" %(contigDict[key][2]), horizontalalignment='left', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
