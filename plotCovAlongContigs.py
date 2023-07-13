@@ -145,10 +145,6 @@ depthRange = depthMax- depthMin
 #	depthBins = int(depthRange)
 #	if depthBins == 0:
 #		depthBins = 1
-if yMin == False:
-	yMin = int(depthMin)
-if yMax == False:
-	yMax = int(depthMax)
 
 n50size = 0
 n50list = []
@@ -170,6 +166,14 @@ print('Smoothing data...')
 for key in contigDict.keys():
 	#smoothingBases = int(len(contigDict[key][1]) * (smoothingFactor/100))
 	movAvgDict[key] = [np.array(running_mean(contigDict[key][0], avgingWindowSize)).tolist(), np.array(running_mean(contigDict[key][1], avgingWindowSize)).tolist()]
+	if yMin == False and runningyMin > min(movAvgDict[key]):
+		runningyMin = int(min(movAvgDict[key]))
+	if yMax == False and runningyMax < max(movAvgDict[key]):
+		runningyMax = int(max(movAvgDict[key]))
+if yMin == False:
+	yMin = runningyMin
+if yMax == False:
+	yMax = runningyMax
 
 print('Plotting charts...')
 print("xMin: %s" % depthLowerBound)
