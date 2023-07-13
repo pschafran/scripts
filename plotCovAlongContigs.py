@@ -56,6 +56,7 @@ for item in sys.argv:
 if input == False:
 	print("ERROR: No input file provided")
 	exit(1)
+filename = input.split(".txt")[0]
 
 file = open(input,"r")
 #if smoothingFactor < 1:
@@ -169,7 +170,7 @@ ax.set_axisbelow(True)
 plt.xlim(depthLowerBound, depthUpperBound)
 ax.text(0.95,0.95, "Median: %d" %(depthMedian), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 ax.text(0.95,0.9, "Mode: %d" %(depthMode), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
-plt.savefig("%s_depth_hist.pdf" %(input.split(".txt")[0]),format = "pdf")
+plt.savefig("%s_depth_hist.pdf" %(filename),format = "pdf")
 plt.close()
 
 for key in contigDict.keys():
@@ -222,7 +223,7 @@ if len(contigDict.keys()) > 1:
 			index += 1
 	ax[index-1].set_xlabel("Position")
 	plt.ylim(yMin,yMax)
-	plt.savefig("%s_all_contigs_%skbp.pdf" %(input.split(".txt")[0]), (avgingWindowSize/1000)),format = "pdf")
+	plt.savefig("%s_all_contigs_%skbp.pdf" %(filename, (avgingWindowSize/1000)),format = "pdf")
 	plt.close()
 
 	#fig, ax = plt.subplots(len(n50list), 1, sharex=True, sharey=True, tight_layout=True, figsize = (8,len(n50list)))
