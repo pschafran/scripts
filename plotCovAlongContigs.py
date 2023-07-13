@@ -97,7 +97,7 @@ for line in file:
 		contigDict[contig] = [[],[]]
 		contigDict[contig][0].append(int(pos))
 		contigDict[contig][1].append(float(depth))
-depthListRand = random.sample(depthList, 10000)
+depthListRand = random.sample(depthList, k=10000)
 #print('Finding high coverage outlier regions...')
 #for key in contigDict.keys():
 #	peaks, _ = find_peaks(contigDict[key][1], prominence = 1)
@@ -177,7 +177,7 @@ print("xMax: %s" % depthUpperBound)
 print("yMin: %s" % yMin)
 print("yMax: %s" % yMax)
 fig, ax = plt.subplots(1,1)
-ax.hist(depthListRand, bins = range(min(depthListRand), max(depthListRand) + 5, 5), density = True)
+ax.hist(depthListRand, bins = range(int(min(depthListRand)), int(max(depthListRand)) + 5 , 5), density = True)
 ax.set_xlabel("Read Depth")
 ax.set_ylabel("Density")
 ax.set_title("Read Depth Across All Sites")
@@ -212,7 +212,7 @@ for key in contigDict.keys():
 
 for key in contigDict.keys():
 	fig, ax = plt.subplots(1,1)
-	ax.hist(random.sample(contigDict[key][1],10000), bins = range(min(contigDict[key][1]), max(contigDict[key][1]) + 5, 5), density = True)
+	ax.hist(random.sample(contigDict[key][1],k=10000), bins = range(int(min(contigDict[key][1])), max(int(contigDict[key][1])) + 5, 5), density = True)
 	ax.set_xlabel("Read Depth")
 	ax.set_ylabel("Density")
 	ax.set_title("%s" %(key))
