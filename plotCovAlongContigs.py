@@ -1,4 +1,4 @@
-#! /home/ps997/miniconda3/bin/python
+#! /usr/bin/env python3
 # Needs to run with python 3 on our server!!!
 
 # Usage: plotCovAlongContigs.py -i depth_output_from_samtools.txt [options]
