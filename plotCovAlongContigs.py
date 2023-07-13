@@ -168,9 +168,9 @@ runningyMin = 0
 for key in contigDict.keys():
 	#smoothingBases = int(len(contigDict[key][1]) * (smoothingFactor/100))
 	movAvgDict[key] = [np.array(running_mean(contigDict[key][0], avgingWindowSize)).tolist(), np.array(running_mean(contigDict[key][1], avgingWindowSize)).tolist()]
-	if yMin == False and runningyMin > min(movAvgDict[key]):
+	if yMin == False and runningyMin > min(movAvgDict[key][1]):
 		runningyMin = int(min(movAvgDict[key]))
-	if yMax == False and runningyMax < max(movAvgDict[key]):
+	if yMax == False and runningyMax < max(movAvgDict[key][1]):
 		runningyMax = int(max(movAvgDict[key]))
 if yMin == False:
 	yMin = runningyMin
