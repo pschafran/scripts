@@ -52,13 +52,13 @@ for item in sys.argv:
 	elif item in ["-w", "--window-size"]:
 		avgingWindowSize = int(sys.argv[index+1])
 	elif item in ["-y","--y-min"]:
-		yMin = sys.argv[index+1]
+		yMin = float(sys.argv[index+1])
 	elif item in ["-Y","--y-max"]:
-		yMax = sys.argv[index+1]
+		yMax = float(sys.argv[index+1])
 	elif item in ["-x","--x-min"]:
-		xMin = sys.argv[index+1]
+		xMin = float(sys.argv[index+1])
 	elif item in ["-X","--x-max"]:
-		xMax = sys.argv[index+1]
+		xMax = float(sys.argv[index+1])
 	index+=1
 
 if input == False:
@@ -144,9 +144,9 @@ if depthBins < 100:
 	if depthBins == 0:
 		depthBins = 1
 if yMin == False:
-	yMin = depthMin
+	yMin = int(depthMin)
 if yMax == False:
-	yMax = depthMax
+	yMax = int(depthMax)
 
 n50size = 0
 n50list = []
@@ -170,6 +170,10 @@ for key in contigDict.keys():
 	movAvgDict[key] = [np.array(running_mean(contigDict[key][0], avgingWindowSize)).tolist(), np.array(running_mean(contigDict[key][1], avgingWindowSize)).tolist()]
 
 print('Plotting charts...')
+print("xMin: %s" % xMin)
+print("xMax: %s" % xMax)
+print("yMin: %s" % yMin)
+print("yMax: %s" % yMax)
 fig, ax = plt.subplots(1,1)
 ax.hist(depthList, bins = depthBins, density = True)
 ax.set_xlabel("Read Depth")
@@ -198,7 +202,7 @@ for key in contigDict.keys():
 	#ax.set_ylim(ymin=(contigDict[key][4] - 100), ymax = (contigDict[key][5] + 100))
 	ax.set_yscale('log')
 	ax.set_axisbelow(True)
-	plt.ylim(yMin,yMax)
+	ax.set_ylim(ymin = yMin,ymax = yMax)
 	#ax.text(0.7, 1.1, "Median Depth: %d" %(contigDict[key][2]), horizontalalignment='left', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 	#ax.text(0.7, 1.05, "Standard Deviation: %d" %(contigDict[key][3]), horizontalalignment='left', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 	plt.savefig("%s_%skbp.pdf" %(key,(avgingWindowSize/1000)),format = "pdf")
