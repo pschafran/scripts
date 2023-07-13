@@ -213,8 +213,6 @@ for key in contigDict.keys():
 for key in contigDict.keys():
 	contigMin = min(contigDict[key][1])
 	contigMax = max(contigDict[key][1])
-	print(contigMin)
-	print(contigMax)
 	fig, ax = plt.subplots(1,1)
 	ax.hist(random.sample(contigDict[key][1],k=10000), bins = range(int(contigMin), int(contigMax + 5), 5), density = True)
 	ax.set_xlabel("Read Depth")
@@ -238,11 +236,11 @@ if len(contigDict.keys()) > 1:
 		ax[index].text(1.01, 0.5, key, horizontalalignment='left', verticalalignment='center',transform=ax[index].transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 		ax[index].spines['right'].set_visible(False)
 		ax[index].spines['top'].set_visible(False)
+		ax[index].set_ylim(ymin = yMin, ymax = yMax)
 		if index == halfway:
 			ax[index].set_ylabel("Read Depth")
 		index += 1
 	ax[index-1].set_xlabel("Position")
-	#ax.set_ylim(ymin = yMin, ymax = yMax)
 	plt.savefig("%s_all_contigs_%skbp.pdf" %(filename, (avgingWindowSize/1000)),format = "pdf")
 	plt.close()
 
