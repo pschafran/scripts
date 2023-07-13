@@ -102,24 +102,24 @@ for line in file:
 #	baseline = np.array(contigDict[key][1])
 #	contigDict[key].append(peaks)
 for key in contigDict.keys():
-	hiCovList = []
+#	hiCovList = []
 	assemblySize += len(contigDict[key][1])
 	contigLengthList.append(len(contigDict[key][1]))
 	contigDict[key].append(np.median(contigDict[key][1])) # contigDict[key][2]
 	contigDict[key].append(np.std(contigDict[key][1])) # contigDict[key][3]
 	contigDict[key].append(np.min(contigDict[key][1])) # contigDict[key][4]
 	contigDict[key].append(np.max(contigDict[key][1])) # contigDict[key[5]
-	if any(x > contigDict[key][2]+(3*contigDict[key][3]) for x in contigDict[key][1]):
+#	if any(x > contigDict[key][2]+(3*contigDict[key][3]) for x in contigDict[key][1]):
 		#print('	%s' %(key))
 		#outfile = open("%s_hiCovRegions.txt" %(key), "w")
 		#outfile.write("position\tcoverage\n")
-		for i in range(0, len(contigDict[key][0])):
-			if contigDict[key][1][i] > contigDict[key][2]+(3*contigDict[key][3]):
-				hiCovList.append(int(contigDict[key][0][i]))
+#		for i in range(0, len(contigDict[key][0])):
+#			if contigDict[key][1][i] > contigDict[key][2]+(3*contigDict[key][3]):
+#				hiCovList.append(int(contigDict[key][0][i]))
 		#		outfile.write("%d\t%f\n" %(contigDict[key][0][i-1], contigDict[key][1][i-1]))
 		#outfile.close()
-		outliers = np.array(hiCovList)
-		contigDict[key].append(contigDict[key][2]+(3*contigDict[key][3])) # contigDict[key][6]
+#		outliers = np.array(hiCovList)
+#		contigDict[key].append(contigDict[key][2]+(3*contigDict[key][3])) # contigDict[key][6]
 
 depthMedian = np.median(depthList)
 depthStd = np.std(depthList)
