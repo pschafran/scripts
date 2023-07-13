@@ -163,6 +163,8 @@ if avgingWindowSize == False:
 movAvgDict = {}
 print("Window Size: %s" %(avgingWindowSize))
 print('Smoothing data...')
+runningyMax = 0
+runningyMin = 0
 for key in contigDict.keys():
 	#smoothingBases = int(len(contigDict[key][1]) * (smoothingFactor/100))
 	movAvgDict[key] = [np.array(running_mean(contigDict[key][0], avgingWindowSize)).tolist(), np.array(running_mean(contigDict[key][1], avgingWindowSize)).tolist()]
