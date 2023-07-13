@@ -208,7 +208,7 @@ for key in contigDict.keys():
 	plt.savefig("%s_depth_hist.pdf" %(key),format = "pdf")
 	plt.close()
 
-if len(contigDict.keys()) > 1:
+if len(contigDict.keys()) > 0:
 	fig, ax = plt.subplots(len(n50list), 1, sharex=True, sharey=True, tight_layout=True, figsize = (8,len(n50list)))
 	index = 0
 	for key in movAvgDict.keys():
