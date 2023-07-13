@@ -25,6 +25,7 @@ from matplotlib import colors
 from numpy import log
 import matplotlib.patches as patches
 from mpl_toolkits.mplot3d import Axes3D
+import random
 
 def running_mean(x, N):
 	cumsum = np.cumsum(np.insert(x, 0, 0))
@@ -96,6 +97,7 @@ for line in file:
 		contigDict[contig] = [[],[]]
 		contigDict[contig][0].append(int(pos))
 		contigDict[contig][1].append(float(depth))
+depthListRand = random.sample(depthList, 10000)
 #print('Finding high coverage outlier regions...')
 #for key in contigDict.keys():
 #	peaks, _ = find_peaks(contigDict[key][1], prominence = 1)
@@ -175,7 +177,7 @@ print("xMax: %s" % depthUpperBound)
 print("yMin: %s" % yMin)
 print("yMax: %s" % yMax)
 fig, ax = plt.subplots(1,1)
-ax.hist(depthList, bins = depthBins, density = True)
+ax.hist(depthListRand, bins = depthBins, density = True)
 ax.set_xlabel("Read Depth")
 ax.set_ylabel("Density")
 ax.set_title("Read Depth Across All Sites")
@@ -210,7 +212,7 @@ for key in contigDict.keys():
 
 for key in contigDict.keys():
 	fig, ax = plt.subplots(1,1)
-	ax.hist(contigDict[key][1], bins = depthBins, density = True)
+	ax.hist(random.sample(contigDict[key][1],10000), bins = depthBins, density = True)
 	ax.set_xlabel("Read Depth")
 	ax.set_ylabel("Density")
 	ax.set_title("%s" %(key))
