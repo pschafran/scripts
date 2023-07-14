@@ -13,6 +13,7 @@ Options:
 -Y, --y-max	maximum y-axis value for coverage plots (default: maximum value of the data)
 -x, --x-min	minimum x-axis value for density plots (default: 0)
 -X, --x-max	maximum x-axis value for density plots (default: median coverage + 100)
+-b, --bin-width	histogram bin size (default: 5)
 '''
 
 import numpy as np
@@ -45,6 +46,7 @@ yMin = False
 yMax = False
 xMin = False
 xMax = False
+binWidth = 5
 
 index = 0
 for item in sys.argv:
@@ -60,6 +62,8 @@ for item in sys.argv:
 		xMin = int(sys.argv[index+1])
 	elif item in ["-X","--x-max"]:
 		xMax = int(sys.argv[index+1])
+	elif item in ["-b","--bin-width"]:
+		binWidth = float(sys.argv[index+1])
 	index+=1
 
 if input == False:
@@ -183,7 +187,7 @@ print("xMax: %s" % depthUpperBound)
 print("yMin: %s" % yMin)
 print("yMax: %s" % yMax)
 fig, ax = plt.subplots(1,1)
-ax.hist(depthListRand, bins = range(int(min(depthListRand)), int(max(depthListRand)) + 5 , 5), density = True)
+ax.hist(depthListRand, bins = range(int(min(depthListRand)), int(max(depthListRand)) + binWidth , binWidth), density = True)
 ax.set_xlabel("Read Depth")
 ax.set_ylabel("Density")
 ax.set_title("Read Depth Across All Sites")
@@ -220,7 +224,7 @@ for key in contigDict.keys():
 	contigMin = min(contigDict[key][1])
 	contigMax = max(contigDict[key][1])
 	fig, ax = plt.subplots(1,1)
-	ax.hist(random.sample(contigDict[key][1],k=10000), bins = range(int(contigMin), int(contigMax + 5), 5), density = True)
+	ax.hist(random.sample(contigDict[key][1],k=10000), bins = range(int(contigMin), int(contigMax + binWidth), binWidth), density = True)
 	ax.set_xlabel("Read Depth")
 	ax.set_ylabel("Density")
 	ax.set_title("%s" %(key))
