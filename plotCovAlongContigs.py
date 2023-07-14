@@ -63,7 +63,7 @@ for item in sys.argv:
 	elif item in ["-X","--x-max"]:
 		xMax = int(sys.argv[index+1])
 	elif item in ["-b","--bin-width"]:
-		binWidth = int(sys.argv[index+1])
+		binWidth = float(sys.argv[index+1])
 	index+=1
 
 if input == False:
@@ -187,7 +187,7 @@ print("xMax: %s" % depthUpperBound)
 print("yMin: %s" % yMin)
 print("yMax: %s" % yMax)
 fig, ax = plt.subplots(1,1)
-ax.hist(depthListRand, bins = range(int(min(depthListRand)), int(max(depthListRand)) + binWidth , binWidth), density = True)
+ax.hist(depthListRand, bins = np.arange(int(min(depthListRand)), int(max(depthListRand)) + binWidth , binWidth), density = True)
 ax.set_xlabel("Read Depth")
 ax.set_ylabel("Density")
 ax.set_title("Read Depth Across All Sites")
@@ -224,7 +224,7 @@ for key in contigDict.keys():
 	contigMin = min(contigDict[key][1])
 	contigMax = max(contigDict[key][1])
 	fig, ax = plt.subplots(1,1)
-	ax.hist(random.sample(contigDict[key][1],k=10000), bins = range(int(contigMin), int(contigMax + binWidth), binWidth), density = True)
+	ax.hist(random.sample(contigDict[key][1],k=10000), bins = np.arange(int(contigMin), int(contigMax + binWidth), binWidth), density = True)
 	ax.set_xlabel("Read Depth")
 	ax.set_ylabel("Density")
 	ax.set_title("%s" %(key))
