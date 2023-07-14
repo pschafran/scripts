@@ -169,12 +169,13 @@ print("Window Size: %s" %(avgingWindowSize))
 print('Smoothing data...')
 runningyMax = 0
 runningyMin = 0
+window = np.ones(int(avgingWindowSize))/float(avgingWindowSize)
 for key in contigDict.keys():
 	movAvgDict[key] = [[],[]]
 	#smoothingBases = int(len(contigDict[key][1]) * (smoothingFactor/100))
 	#movAvgDict[key] = [np.array(running_mean(contigDict[key][0], avgingWindowSize)).tolist(), np.array(running_mean(contigDict[key][1], avgingWindowSize)).tolist()]
 	movAvgDict[key][0] = contigDict[key][0]
-	movAvgDict[key][1] = np.convolve(contigDict[key][1], avgingWindowSize, mode = "valid").tolist()
+	movAvgDict[key][1] = np.convolve(contigDict[key][1], window, mode = "valid").tolist()
 	#movAvgDict[key] = np.array([contigDict[key][0], movAvgList])
 	if yMin == False and runningyMin > min(movAvgDict[key][1]):
 		runningyMin = int(min(movAvgDict[key][1]))
