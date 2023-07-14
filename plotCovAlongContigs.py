@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-# Needs to run with python 3 on our server!!!
+# Needs to run with python 3!
 
 # Usage: plotCovAlongContigs.py -i depth_output_from_samtools.txt [options]
 
@@ -63,7 +63,7 @@ for item in sys.argv:
 	elif item in ["-X","--x-max"]:
 		xMax = int(sys.argv[index+1])
 	elif item in ["-b","--bin-width"]:
-		binWidth = float(sys.argv[index+1])
+		binWidth = int(sys.argv[index+1])
 	index+=1
 
 if input == False:
