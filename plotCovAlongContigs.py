@@ -170,6 +170,7 @@ print('Smoothing data...')
 runningyMax = 0
 runningyMin = 0
 for key in contigDict.keys():
+	movAvgDict[key] = [[],[]]
 	#smoothingBases = int(len(contigDict[key][1]) * (smoothingFactor/100))
 	#movAvgDict[key] = [np.array(running_mean(contigDict[key][0], avgingWindowSize)).tolist(), np.array(running_mean(contigDict[key][1], avgingWindowSize)).tolist()]
 	movAvgDict[key][0] = contigDict[key][0]
