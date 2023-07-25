@@ -131,7 +131,7 @@ depthMedian = np.median(depthList)
 depthStd = np.std(depthList)
 depthMin = np.min(depthList)
 depthMax = np.max(depthList)
-depthMode = stats.mode(depthList)[0][0]
+#depthMode = stats.mode(depthList)[0][0]
 #depthRange = depthMax - depthMin
 if xMin == False:
 	depthLowerBound = depthMedian - 100
@@ -200,7 +200,7 @@ plt.grid(which='major',axis='both',linestyle='dashed')
 ax.set_axisbelow(True)
 ax.set_xlim(depthLowerBound, depthUpperBound)
 ax.text(0.95,0.95, "Median: %d" %(depthMedian), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
-ax.text(0.95,0.9, "Mode: %d" %(depthMode), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
+#ax.text(0.95,0.9, "Mode: %d" %(depthMode), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 plt.savefig("%s_depth_hist.pdf" %(filename),format = "pdf")
 plt.close()
 
@@ -237,7 +237,7 @@ for key in contigDict.keys():
 	ax.set_axisbelow(True)
 	ax.set_xlim(xmin = depthLowerBound, xmax = depthUpperBound)
 	ax.text(0.95,0.95, "Median: %d" %(np.median(contigDict[key][1])), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
-	ax.text(0.95,0.9, "Mode: %d" %(stats.mode(contigDict[key][1])[0][0]), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
+#	ax.text(0.95,0.9, "Mode: %d" %(stats.mode(contigDict[key][1])[0][0]), horizontalalignment='right', verticalalignment='center', transform=ax.transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 	plt.savefig("%s_depth_hist.pdf" %(key),format = "pdf")
 	plt.close()
 
