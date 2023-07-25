@@ -232,7 +232,7 @@ for key in contigDict.keys():
 	contigMin = min(contigDict[key][1])
 	contigMax = max(contigDict[key][1])
 	fig, ax = plt.subplots(1,1)
-	if len(contigDict[key[1]) > 10000:
+	if len(contigDict[key][1]) > 10000:
 		ax.hist(random.sample(contigDict[key][1],k=10000), bins = np.arange(int(contigMin), int(contigMax + binWidth), binWidth), density = True)
 	else:
 		ax.hist(contigDict[key][1], bins = np.arange(int(contigMin), int(contigMax + binWidth), binWidth), density = True)
