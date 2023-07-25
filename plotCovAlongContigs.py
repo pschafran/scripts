@@ -101,7 +101,10 @@ for line in file:
 		contigDict[contig] = [[],[]]
 		contigDict[contig][0].append(int(pos))
 		contigDict[contig][1].append(float(depth))
-depthListRand = random.sample(depthList, k=10000)
+if len(depthList) > 10000:
+	depthListRand = random.sample(depthList, k=10000)
+else:
+	depthListRand = depthList
 #print('Finding high coverage outlier regions...')
 #for key in contigDict.keys():
 #	peaks, _ = find_peaks(contigDict[key][1], prominence = 1)
@@ -229,7 +232,10 @@ for key in contigDict.keys():
 	contigMin = min(contigDict[key][1])
 	contigMax = max(contigDict[key][1])
 	fig, ax = plt.subplots(1,1)
-	ax.hist(random.sample(contigDict[key][1],k=10000), bins = np.arange(int(contigMin), int(contigMax + binWidth), binWidth), density = True)
+	if len(contigDict[key[1]) > 10000:
+		ax.hist(random.sample(contigDict[key][1],k=10000), bins = np.arange(int(contigMin), int(contigMax + binWidth), binWidth), density = True)
+	else:
+		ax.hist(contigDict[key][1], bins = np.arange(int(contigMin), int(contigMax + binWidth), binWidth), density = True)
 	ax.set_xlabel("Read Depth")
 	ax.set_ylabel("Density")
 	ax.set_title("%s" %(key))
