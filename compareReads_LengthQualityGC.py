@@ -1,4 +1,4 @@
-#! /home/ps997/miniconda3/bin/python
+#! /usr/bin/env python
 # Needs to run with python 3 on our server!!!
 
 # 2020 January 18
@@ -69,7 +69,7 @@ if numFiles > 1:
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	axsIndex = 0
 	for key in sorted(fileDict.keys()):
-		axs[axsIndex].hist(fileDict[key]["lengthList"], bins = 100)
+		axs[axsIndex].hist(fileDict[key]["lengthList"], bins = 500)
 		axsIndex += 1
 	axsIndex = 0
 	for key in sorted(fileDict.keys()):
@@ -90,8 +90,11 @@ if numFiles > 1:
 	# Histograms of log-lengths for both runs
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	axsIndex = 0
+	plt.xscale('log')
 	for key in sorted(fileDict.keys()):
-		axs[axsIndex].hist(fileDict[key]["logLengthList"], bins = 100)
+		hist, bins = np.histogram(fileDict[key]["lengthList"], bins=500)
+		logbins = np.logspace(np.log10(bins[0]),np.log10(bins[-1]),len(bins))
+		axs[axsIndex].hist(fileDict[key]["lengthList"], bins = logbins)
 		axsIndex += 1
 	axsIndex = 0
 	for key in sorted(fileDict.keys()):
@@ -112,7 +115,7 @@ if numFiles > 1:
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	axsIndex = 0
 	for key in sorted(fileDict.keys()):
-		axs[axsIndex].hist(fileDict[key]["qualList"], bins = 100)
+		axs[axsIndex].hist(fileDict[key]["qualList"], bins = 500)
 		axsIndex += 1
 	axsIndex = 0
 	for key in sorted(fileDict.keys()):
@@ -135,7 +138,7 @@ if numFiles > 1:
 
 	axsIndex = 0
 	for key in sorted(fileDict.keys()):
-		axs[axsIndex].hist(fileDict[key]["gcList"], bins = 100)
+		axs[axsIndex].hist(fileDict[key]["gcList"], bins = 500)
 		axsIndex += 1
 	axsIndex = 0
 	for key in sorted(fileDict.keys()):
@@ -158,7 +161,7 @@ if numFiles > 1:
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	axsIndex = 0
 	for key in sorted(fileDict.keys()):
-		h = axs[axsIndex].hist2d(fileDict[key]["lengthList"], fileDict[key]["qualList"], bins = 100, norm = colors.LogNorm())
+		h = axs[axsIndex].hist2d(fileDict[key]["lengthList"], fileDict[key]["qualList"], bins = 500, norm = colors.LogNorm())
 		axsIndex += 1
 	axsIndex = 0
 	for key in sorted(fileDict.keys()):
@@ -182,18 +185,22 @@ if numFiles > 1:
 	# 2D Histogram of log-length vs. quality for both runs
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	axsIndex = 0
+	plt.xscale('log')
 	for key in sorted(fileDict.keys()):
-		h = axs[axsIndex].hist2d(fileDict[key]["logLengthList"], fileDict[key]["qualList"], bins = 100, norm = colors.LogNorm())
+		hist, bins = np.histogram(fileDict[key]["lengthList"], bins=500)
+		logbins = np.logspace(np.log10(bins[0]),np.log10(bins[-1]),len(bins))
+		hist, normbins = np.histogram(fileDict[key]["qualList"], bins=500)
+		h = axs[axsIndex].hist2d(fileDict[key]["lengthList"], fileDict[key]["qualList"], bins = [logbins, normbins], norm = colors.LogNorm())
 		axsIndex += 1
 	axsIndex = 0
 	for key in sorted(fileDict.keys()):
 		if axsIndex == 0:
 			axs[axsIndex].set_ylabel('Read Avg. Quality Score')
 			axs[axsIndex].tick_params(axis='x', labelsize=20*fontScale)
-			axs[axsIndex].set_xlabel('Log-transformed Read Length', size=20*fontScale, wrap = True)
+			axs[axsIndex].set_xlabel('Read Length', size=20*fontScale, wrap = True)
 			axs[axsIndex].set_title(fileDict[key]["filePrefix"], size = 20*fontScale, wrap = True)
 		else:
-			axs[axsIndex].set_xlabel('Log-transformed Read Length', size=20*fontScale, wrap = True)
+			axs[axsIndex].set_xlabel('Read Length', size=20*fontScale, wrap = True)
 			axs[axsIndex].tick_params(axis='x', labelsize=20*fontScale)
 			axs[axsIndex].set_title(fileDict[key]["filePrefix"], fontsize = 20*fontScale, wrap = True)
 		axsIndex += 1
@@ -208,7 +215,7 @@ if numFiles > 1:
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	axsIndex = 0
 	for key in sorted(fileDict.keys()):
-		h = axs[axsIndex].hist2d(fileDict[key]["lengthList"], fileDict[key]["gcList"], bins = 100, norm = colors.LogNorm())
+		h = axs[axsIndex].hist2d(fileDict[key]["lengthList"], fileDict[key]["gcList"], bins = 500, norm = colors.LogNorm())
 		axsIndex += 1
 	axsIndex = 0
 	for key in sorted(fileDict.keys()):
@@ -232,18 +239,22 @@ if numFiles > 1:
 	# 2D Histogram of log-length vs. GC% for both runs
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	axsIndex = 0
+	plt.xscale('log')
 	for key in sorted(fileDict.keys()):
-		h = axs[axsIndex].hist2d(fileDict[key]["logLengthList"], fileDict[key]["gcList"], bins = 100, norm = colors.LogNorm())
+		hist, bins = np.histogram(fileDict[key]["lengthList"], bins=500)
+		logbins = np.logspace(np.log10(bins[0]),np.log10(bins[-1]),len(bins))
+		hist, normbins = np.histogram(fileDict[key]["gcList"], bins=500)
+		h = axs[axsIndex].hist2d(fileDict[key]["lengthList"], fileDict[key]["gcList"], bins = [logbins, normbins], norm = colors.LogNorm())
 		axsIndex += 1
 	axsIndex = 0
 	for key in sorted(fileDict.keys()):
 		if axsIndex == 0:
 			axs[axsIndex].set_ylabel('GC%')
 			axs[axsIndex].tick_params(axis='x', labelsize=20*fontScale)
-			axs[axsIndex].set_xlabel('Log-transformed Read Length', size=20*fontScale, wrap = True)
+			axs[axsIndex].set_xlabel('Read Length', size=20*fontScale, wrap = True)
 			axs[axsIndex].set_title(fileDict[key]["filePrefix"], size = 20*fontScale, wrap = True)
 		else:
-			axs[axsIndex].set_xlabel('Log-transformed Read Length', size=20*fontScale, wrap = True)
+			axs[axsIndex].set_xlabel('Read Length', size=20*fontScale, wrap = True)
 			axs[axsIndex].tick_params(axis='x', labelsize=20*fontScale)
 			axs[axsIndex].set_title(fileDict[key]["filePrefix"], fontsize = 20*fontScale, wrap = True)
 		axsIndex += 1
@@ -258,7 +269,7 @@ if numFiles > 1:
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	axsIndex = 0
 	for key in sorted(fileDict.keys()):
-		h = axs[axsIndex].hist2d(fileDict[key]["qualList"], fileDict[key]["gcList"], bins = 100, norm = colors.LogNorm())
+		h = axs[axsIndex].hist2d(fileDict[key]["qualList"], fileDict[key]["gcList"], bins = 500, norm = colors.LogNorm())
 		axsIndex += 1
 	axsIndex = 0
 	for key in sorted(fileDict.keys()):
@@ -284,7 +295,7 @@ elif numFiles == 1:
 	# Histogram of lengths
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	for key in sorted(fileDict.keys()):
-		axs.hist(fileDict[key]["lengthList"], bins = 100)
+		axs.hist(fileDict[key]["lengthList"], bins = 500)
 	for key in sorted(fileDict.keys()):
 		axs.set_ylabel('No. of Reads')
 		axs.set_xlabel('Read Length', size=10, wrap=True)
@@ -294,22 +305,25 @@ elif numFiles == 1:
 	plt.close()
 
 
-	# Histograms of log-lengths for both runs
+	# Histograms of log-lengths
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	for key in sorted(fileDict.keys()):
-		axs.hist(fileDict[key]["logLengthList"], bins = 100)
+		hist, bins = np.histogram(fileDict[key]["lengthList"], bins=500)
+		logbins = np.logspace(np.log10(bins[0]),np.log10(bins[-1]),len(bins))
+		axs.hist(fileDict[key]["lengthList"], bins = logbins)
 	for key in sorted(fileDict.keys()):
 		axs.set_ylabel('No. of Reads')
 		axs.tick_params(axis='x', labelsize=10)
-		axs.set_xlabel('Log-transformed Read Length', size=10, wrap = True)
+		axs.set_xlabel('Read Length', size=10, wrap = True)
 		axs.set_title(fileDict[key]["filePrefix"], size = 10, wrap = True)
+	plt.xscale('log')
 	plt.savefig("Log_sequence_lengths.pdf" , format = "pdf")
 	plt.close()
 
-	# Histograms of quality for both runs
+	# Histograms of quality
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	for key in sorted(fileDict.keys()):
-		axs.hist(fileDict[key]["qualList"], bins = 100)
+		axs.hist(fileDict[key]["qualList"], bins = 500)
 	for key in sorted(fileDict.keys()):
 		axs.set_ylabel('No. of Reads')
 		axs.tick_params(axis='x', labelsize=10)
@@ -319,10 +333,10 @@ elif numFiles == 1:
 	plt.close()
 
 
-	# Histograms of GC% for both runs
+	# Histograms of GC%
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	for key in sorted(fileDict.keys()):
-		axs.hist(fileDict[key]["gcList"], bins = 100)
+		axs.hist(fileDict[key]["gcList"], bins = 500)
 	for key in sorted(fileDict.keys()):
 		axs.set_ylabel('No. of Reads')
 		axs.tick_params(axis='x', labelsize=10)
@@ -332,10 +346,10 @@ elif numFiles == 1:
 	plt.close()
 
 
-	# 2D Histograms of length vs. quality for both runs
+	# 2D Histograms of length vs. quality
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	for key in sorted(fileDict.keys()):
-		h = axs.hist2d(fileDict[key]["lengthList"], fileDict[key]["qualList"], bins = 100, norm = colors.LogNorm())
+		h = axs.hist2d(fileDict[key]["lengthList"], fileDict[key]["qualList"], bins = 500, norm = colors.LogNorm())
 	for key in sorted(fileDict.keys()):
 		axs.set_ylabel('Read Avg. Quality Score')
 		axs.tick_params(axis='x', labelsize=10)
@@ -348,26 +362,30 @@ elif numFiles == 1:
 	plt.close()
 	
 	
-	# 2D Histogram of log-length vs. quality for both runs
+	# 2D Histogram of log-length vs. quality
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	for key in sorted(fileDict.keys()):
-		h = axs.hist2d(fileDict[key]["logLengthList"], fileDict[key]["qualList"], bins = 100, norm = colors.LogNorm())
+		hist, bins = np.histogram(fileDict[key]["lengthList"], bins=500)
+		logbins = np.logspace(np.log10(bins[0]),np.log10(bins[-1]),len(bins))
+		hist, normbins = np.histogram(fileDict[key]["qualList"], bins=500)
+		h = axs.hist2d(fileDict[key]["lengthList"], fileDict[key]["qualList"], bins = [logbins,normbins] , norm = colors.LogNorm())
 	for key in sorted(fileDict.keys()):
 		axs.set_ylabel('Read Avg. Quality Score')
 		axs.tick_params(axis='x', labelsize=10)
-		axs.set_xlabel('Log-transformed Read Length', size=10, wrap = True)
+		axs.set_xlabel('Read Length', size=10, wrap = True)
 		axs.set_title(fileDict[key]["filePrefix"], size = 10, wrap = True)
 	cbar = plt.colorbar(h[3], ax=axs, pad = 0.01, aspect = 50)
 	cbar.set_label('# of reads', rotation=90, fontsize = 10)
-	cbar.ax.tick_params(labelsize=5) 
+	cbar.ax.tick_params(labelsize=5)
+	plt.xscale('log') 
 	plt.savefig("LogLength_vs_Quality.pdf" , format = "pdf")
 	plt.close()
 	
 	
-	# 2D Histograms of length vs. GC% for both runs
+	# 2D Histograms of length vs. GC%
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	for key in sorted(fileDict.keys()):
-		h = axs.hist2d(fileDict[key]["lengthList"], fileDict[key]["gcList"], bins = 100, norm = colors.LogNorm())
+		h = axs.hist2d(fileDict[key]["lengthList"], fileDict[key]["gcList"], bins = 500, norm = colors.LogNorm())
 	for key in sorted(fileDict.keys()):
 		axs.set_ylabel('GC%')
 		axs.tick_params(axis='x', labelsize=10)
@@ -380,26 +398,30 @@ elif numFiles == 1:
 	plt.close()
 	
 	
-	# 2D Histogram of log-length vs. GC% for both runs
+	# 2D Histogram of log-length vs. GC%
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	for key in sorted(fileDict.keys()):
-		h = axs.hist2d(fileDict[key]["logLengthList"], fileDict[key]["gcList"], bins = 100, norm = colors.LogNorm())
+		hist, bins = np.histogram(fileDict[key]["lengthList"], bins=500)
+		logbins = np.logspace(np.log10(bins[0]),np.log10(bins[-1]),len(bins))
+		hist, normbins = np.histogram(fileDict[key]["gcList"], bins=500)
+		h = axs.hist2d(fileDict[key]["lengthList"], fileDict[key]["gcList"], bins = [logbins, normbins], norm = colors.LogNorm())
 	for key in sorted(fileDict.keys()):
 		axs.set_ylabel('GC%')
 		axs.tick_params(axis='x', labelsize=10)
-		axs.set_xlabel('Log-transformed Read Length', size=10, wrap = True)
+		axs.set_xlabel('Read Length', size=10, wrap = True)
 		axs.set_title(fileDict[key]["filePrefix"], size = 10, wrap = True)
 	cbar = plt.colorbar(h[3], ax=axs, pad = 0.01, aspect = 50)
 	cbar.set_label('# of reads', rotation=90, fontsize = 10)
-	cbar.ax.tick_params(labelsize=5) 
+	cbar.ax.tick_params(labelsize=5)
+	plt.xscale('log') 
 	plt.savefig("LogLength_vs_GC.pdf" , format = "pdf")
 	plt.close()
 	
 	
-	# 2D Histograms of quality vs. GC% for both runs
+	# 2D Histograms of quality vs. GC%
 	fig, axs = plt.subplots(1, numFiles, sharex=True, sharey=True, tight_layout=False)
 	for key in sorted(fileDict.keys()):
-		h = axs.hist2d(fileDict[key]["qualList"], fileDict[key]["gcList"], bins = 100, norm = colors.LogNorm())
+		h = axs.hist2d(fileDict[key]["qualList"], fileDict[key]["gcList"], bins = 500, norm = colors.LogNorm())
 	for key in sorted(fileDict.keys()):
 		axs.set_ylabel('GC%')
 		axs.tick_params(axis='x', labelsize=10)
