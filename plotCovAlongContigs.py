@@ -183,8 +183,12 @@ runningyMax = 0
 runningyMin = 0
 #window = np.ones(int(avgingWindowSize))/float(avgingWindowSize)
 for key in contigDict.keys():
+<<<<<<< HEAD
 	movAvgDict[key] = [[],[]]
 	movMedianDict[key] = [[],[]]
+=======
+	#movAvgDict[key] = [[],[]]
+>>>>>>> refs/remotes/origin/main
 	#smoothingBases = int(len(contigDict[key][1]) * (smoothingFactor/100))
 	movAvgDict[key] = [np.array(running_mean(contigDict[key][0], avgingWindowSize)).tolist(), np.array(running_mean(contigDict[key][1], avgingWindowSize)).tolist()]
 	for i in range(1,len(contigDict[key][0]), slideSize):
