@@ -9,6 +9,7 @@ plotCovAlongContigs.py -i depth_output_from_samtools.txt [options]
 Options:
 -i, --input	text file containing depth data in 3-column format (i.e. output from samtools depth)
 -w, --window-size	size of sliding window to average depth over (default: 0.05% of genome size)
+-s, --slide-size	how much to slide the window in each iteration (default: 0.05% of genome size)
 -y, --y-min	minimum y-axis value for coverage plots (default: 0)
 -Y, --y-max	maximum y-axis value for coverage plots (default: maximum value of the data)
 -x, --x-min	minimum x-axis value for density plots (default: 0)
@@ -32,6 +33,7 @@ def running_mean(x, N):
 	cumsum = np.cumsum(np.insert(x, 0, 0))
 	return (cumsum[N:] - cumsum[:-N]) / float(N)
 
+
 if "-h" in sys.argv:
 	print(help)
 	exit(0)
@@ -42,6 +44,7 @@ if len(sys.argv) < 2:
 
 input = False
 avgingWindowSize = False
+slideSize = False
 yMin = False
 yMax = False
 xMin = False
@@ -64,6 +67,8 @@ for item in sys.argv:
 		xMax = int(sys.argv[index+1])
 	elif item in ["-b","--bin-width"]:
 		binWidth = float(sys.argv[index+1])
+	elif item in ["-s","--slide-size"]:
+		slideSize = int(sys.argv[index+1])
 	index+=1
 
 if input == False:
@@ -167,16 +172,27 @@ n50 = np.min(n50list)
 print("Assembly Size: %s" %(assemblySize))
 if avgingWindowSize == False:
 	avgingWindowSize = int(assemblySize * 0.005)
+if slideSize == False:
+	slideSize = int(assemblySize * 0.005)
 movAvgDict = {}
+movMedianDict = {}
 print("Window Size: %s" %(avgingWindowSize))
+print("Slide Size: %s" %(slideSize))
 print('Smoothing data...')
 runningyMax = 0
 runningyMin = 0
 #window = np.ones(int(avgingWindowSize))/float(avgingWindowSize)
 for key in contigDict.keys():
 	movAvgDict[key] = [[],[]]
+	movMedianDict[key] = [[],[]]
 	#smoothingBases = int(len(contigDict[key][1]) * (smoothingFactor/100))
 	movAvgDict[key] = [np.array(running_mean(contigDict[key][0], avgingWindowSize)).tolist(), np.array(running_mean(contigDict[key][1], avgingWindowSize)).tolist()]
+	for i in range(1,len(contigDict[key][0]), slideSize):
+		try:
+			movMedianDict[key][0].append(np.median(contigDict[key][0][i:i+avgingWindowSize]))
+			movMedianDict[key][1].append(np.median(contigDict[key][1][i:i+avgingWindowSize]))
+		except:
+			pass
 	#movAvgDict[key][0] = contigDict[key][0]
 	#movAvgDict[key][1] = np.convolve(contigDict[key][1], window, mode = "valid").tolist()
 	#movAvgDict[key] = np.array([contigDict[key][0], movAvgList])
@@ -212,9 +228,10 @@ for key in contigDict.keys():
 	fig, ax = plt.subplots(1,1)
 	ax.plot(movAvgDict[key][0], movAvgDict[key][1], color = "blue", linewidth = 0.5)
 	#ax.plot(movAvgDict[key][0], movAvgDict[key][1], color = "blue")
-	ax.hlines(contigDict[key][2]+contigDict[key][3], xmin = np.min(contigDict[key][0]), xmax = np.max(contigDict[key][0]), color = "yellow", label = "1 SD")
-	ax.hlines(contigDict[key][2]+(2*contigDict[key][3]), xmin = np.min(contigDict[key][0]), xmax = np.max(contigDict[key][0]), color = "orange", label = "2 SD")
-	ax.hlines(contigDict[key][2]+(3*contigDict[key][3]), xmin = np.min(contigDict[key][0]), xmax = np.max(contigDict[key][0]), color = "red", label = "3 SD")
+	ax.plot(movMedianDict[key][0], movMedianDict[key][1], color = "red", linewidth = 0.5)
+	#ax.hlines(contigDict[key][2]+contigDict[key][3], xmin = np.min(contigDict[key][0]), xmax = np.max(contigDict[key][0]), color = "yellow", label = "1 SD")
+	#ax.hlines(contigDict[key][2]+(2*contigDict[key][3]), xmin = np.min(contigDict[key][0]), xmax = np.max(contigDict[key][0]), color = "orange", label = "2 SD")
+	#ax.hlines(contigDict[key][2]+(3*contigDict[key][3]), xmin = np.min(contigDict[key][0]), xmax = np.max(contigDict[key][0]), color = "red", label = "3 SD")
 	ax.set_xlabel("Position")
 	ax.set_ylabel("Read Depth")
 	ax.set_title("%s" %(key))
@@ -253,7 +270,8 @@ if len(contigDict.keys()) > 1:
 	for key in movAvgDict.keys():
 		halfway = int(len(contigDict.keys())/2)
 		#if len(contigDict[key][0]) >= n50:
-		ax[index].plot(movAvgDict[key][0], movAvgDict[key][1])
+		ax[index].plot(movMedianDict[key][0], movMedianDict[key][1])
+		ax[index].hlines(np.median(movMedianDict[key][1]), xmin = 1, xmax = np.max(movMedianDict[key][0]), linewidth = 0.5)
 		ax[index].text(1.01, 0.5, key, horizontalalignment='left', verticalalignment='center',transform=ax[index].transAxes, bbox=dict(facecolor='white', edgecolor='white', alpha=0.5))
 		ax[index].spines['right'].set_visible(False)
 		ax[index].spines['top'].set_visible(False)
