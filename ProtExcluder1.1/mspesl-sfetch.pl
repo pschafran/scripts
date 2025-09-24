@@ -14,7 +14,7 @@ open(MSP, "$ARGV[1]") || die "Can not open the input MSP file $ARGV[1]\n$usage";
 
 `rm -f $ARGV[3]`;
 
- `/home/fay-wei/bin/hmmer-3.2/binaries/esl-sfetch --index $ARGV[0]`;
+ `esl-sfetch --index $ARGV[0]`;
 
 while (<MSP>) {
     @line = split;
@@ -23,10 +23,10 @@ while (<MSP>) {
     if ($from < 1) {$from=1;}
     if ($to < 1) {$to=1;}
     if ($line[2] < $line[3]) {
-    `/home/fay-wei/bin/hmmer-3.2/binaries/esl-sfetch -c $from..$to $ARGV[0] $line[7] >> $ARGV[3]`;
+    `esl-sfetch -c $from..$to $ARGV[0] $line[7] >> $ARGV[3]`;
     }
     else { 
-`/home/fay-wei/bin/hmmer-3.2/binaries/esl-sfetch -c $from..$to -r $ARGV[0] $line[7] >> $ARGV[3]`;
+`esl-sfetch -c $from..$to -r $ARGV[0] $line[7] >> $ARGV[3]`;
     }
 
  if ($?) {print $_, "failure\n\n"; $failure++;}
