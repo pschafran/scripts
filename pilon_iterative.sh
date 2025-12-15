@@ -25,13 +25,13 @@ while [ $iteration -le $iteration_num ]
 
 	do
 	echo Iteration: ${iteration}
-	minimap2 -ax map-ont -t $threads $assembly $reads | samtools sort -o minimap2.bam
-	bwa index ${assembly}
-	
-	bwa mem -t $threads $assembly $illumina1 $illumina2 | samtools sort -o bwa.bam
-	samtools index bwa.bam
-	samtools index minimap2.bam
-	java -Xmx100G -jar /home/ps997/bin/pilon-1.23.jar --genome $assembly --frags bwa.bam --nanopore minimap2.bam --output pilon.${iteration}
+	minimap2 -ax lr:hq -t $threads $assembly $reads | samtools sort -o ont.bam
+	minimap2 -ax sr -t $threads $assembly $illumina1 $illumina2 | samtools sort -o illumina.bam
+	#bwa index ${assembly}
+	#bwa mem -t $threads $assembly $illumina1 $illumina2 | samtools sort -o bwa.bam
+	samtools index illumina.bam
+	samtools index ont.bam
+	java -Xmx100G -jar /home/ps997/bin/pilon-1.24.jar --genome $assembly --frags illumina.bam --nanopore ont.bam --output pilon.${iteration}
 
 	assembly=pilon.${iteration}.fasta
 	iteration=$((iteration+1))
